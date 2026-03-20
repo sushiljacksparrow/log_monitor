@@ -1,0 +1,7 @@
+version: v2
+modules:
+  - path: internal/grpc/proto
+lint:
+  except:
+    - PACKAGE_VERSION_SUFFIX
+    - PACKAGE_DIRECTORY_MATCH

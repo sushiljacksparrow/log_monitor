@@ -1,0 +1,16 @@
+syntax = "proto3";
+package query;
+
+option go_package = "internal/grpc/gen/query;query";
+
+message IndexMapping {
+  string index_name = 1;
+  map<string, string> mapping = 2;
+}
+message GetIndexesWithMappingRequest {}
+message GetIndexesWithMappingResponse {
+  repeated IndexMapping indexes = 1;
+}
+service QueryService {
+  rpc GetIndexesWithMapping(GetIndexesWithMappingRequest) returns (GetIndexesWithMappingResponse);
+}

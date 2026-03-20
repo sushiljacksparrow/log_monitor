@@ -1,0 +1,51 @@
+package main
+
+var MockPaymentLog = []map[string]interface{}{
+	{
+		"service":   "payment-service",
+		"level":     "INFO",
+		"message":   "Payment initiated",
+		"requestId": "req-201",
+		"orderId":   "order-1001",
+		"paymentId": "pay-2001",
+		"amount":    1499.99,
+		"timestamp": "",
+	},
+	{
+		"service":   "payment-service",
+		"level":     "DEBUG",
+		"message":   "Calling payment gateway API",
+		"requestId": "req-202",
+		"paymentId": "pay-2001",
+		"gateway":   "Razorpay",
+		"timestamp": "",
+	},
+	{
+		"service":   "payment-service",
+		"level":     "WARN",
+		"message":   "Payment delayed due to network latency",
+		"requestId": "req-203",
+		"paymentId": "pay-2002",
+		"orderId":   "order-1004",
+		"timestamp": "",
+	},
+	{
+		"service":   "payment-service",
+		"level":     "ERROR",
+		"message":   "Payment failed due to insufficient funds",
+		"requestId": "req-204",
+		"paymentId": "pay-2003",
+		"orderId":   "order-1005",
+		"timestamp": "",
+	},
+	{
+		"service":   "payment-service",
+		"level":     "INFO",
+		"message":   "Payment completed successfully",
+		"requestId": "req-205",
+		"paymentId": "pay-2004",
+		"orderId":   "order-1006",
+		"amount":    2499.50,
+		"timestamp": "",
+	},
+}

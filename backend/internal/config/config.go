@@ -1,0 +1,54 @@
+package config
+
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+
+	dotenv "github.com/joho/godotenv"
+)
+
+type Envs struct {
+	KafkaBrokers         []string
+	KafkaTopicAuthLog    string
+	KafkaTopicOrderLog   string
+	KafkaTopicPaymentLog string
+	KafkaTopicLogGroupID string
+	ElasticSearchHost    []string
+}
+
+func InitConfig() (Envs, error) {
+	// Get current working directory
+	dir, err := os.Getwd()
+	if err != nil {
+		return Envs{}, err
+	}
+	fmt.Printf("Current working directory: %s\n", dir)
+
+	envPath := filepath.Join(dir, "..", "..", ".env")
+
+	fmt.Printf("Loading .env from: %s\n", envPath)
+
+	if err := dotenv.Load(envPath); err != nil {
+		return Envs{}, fmt.Errorf("error while loading env file %s: %v", envPath, err)
+	}
+	kafkaBrokers := os.Getenv("KAFKA_BROKERS")
+	kafkaTopicOrderLog := os.Getenv("KAFKA_TOPIC_ORDER_LOG")
+	kafkaTopicAuthLog := os.Getenv("KAFKA_TOPIC_AUTH_LOG")
+	kafkaTopicPaymentLog := os.Getenv("KAFKA_TOPIC_PAYMENT_LOG")
+
+	kafkaTopicLogGroupID := os.Getenv("KAFKA_LOG_GROUP_ID")
+	elasticSearchHost := os.Getenv("ELASTIC_SEARCH_HOST")
+	if len(kafkaBrokers) == 0 || len(kafkaTopicAuthLog) == 0 || len(kafkaTopicOrderLog) == 0 || len(kafkaTopicPaymentLog) == 0 || len(kafkaTopicLogGroupID) == 0 || len(elasticSearchHost) == 0 {
+		return Envs{}, fmt.Errorf("KAFKA_BROKERS or KAFKA_TOPIC_AUTH_LOG or KAFKA_TOPIC_ORDER_LOG or KAFKA_TOPIC_PAYMENT_LOG or KAFKA_LOG_GROUP_ID env not found")
+	}
+	fmt.Println(kafkaBrokers)
+	return Envs{
+		KafkaBrokers:         []string{kafkaBrokers},
+		KafkaTopicAuthLog:    kafkaTopicAuthLog,
+		KafkaTopicOrderLog:   kafkaTopicOrderLog,
+		KafkaTopicPaymentLog: kafkaTopicPaymentLog,
+		KafkaTopicLogGroupID: kafkaTopicLogGroupID,
+		ElasticSearchHost:    []string{elasticSearchHost},
+	}, nil
+}

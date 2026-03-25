@@ -19,14 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	QueryService_GetIndexesWithMapping_FullMethodName = "/query.QueryService/GetIndexesWithMapping"
+	QueryService_AuthLogs_FullMethodName    = "/query.QueryService/AuthLogs"
+	QueryService_PaymentLogs_FullMethodName = "/query.QueryService/PaymentLogs"
+	QueryService_OrderLogs_FullMethodName   = "/query.QueryService/OrderLogs"
 )
 
 // QueryServiceClient is the client API for QueryService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type QueryServiceClient interface {
-	GetIndexesWithMapping(ctx context.Context, in *GetIndexesWithMappingRequest, opts ...grpc.CallOption) (*GetIndexesWithMappingResponse, error)
+	AuthLogs(ctx context.Context, in *AuthLogsRequest, opts ...grpc.CallOption) (*AuthLogsResponse, error)
+	PaymentLogs(ctx context.Context, in *PaymentLogsRequest, opts ...grpc.CallOption) (*PaymentLogsResponse, error)
+	OrderLogs(ctx context.Context, in *OrderLogsRequest, opts ...grpc.CallOption) (*OrderLogsResponse, error)
 }
 
 type queryServiceClient struct {
@@ -37,10 +41,30 @@ func NewQueryServiceClient(cc grpc.ClientConnInterface) QueryServiceClient {
 	return &queryServiceClient{cc}
 }
 
-func (c *queryServiceClient) GetIndexesWithMapping(ctx context.Context, in *GetIndexesWithMappingRequest, opts ...grpc.CallOption) (*GetIndexesWithMappingResponse, error) {
+func (c *queryServiceClient) AuthLogs(ctx context.Context, in *AuthLogsRequest, opts ...grpc.CallOption) (*AuthLogsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetIndexesWithMappingResponse)
-	err := c.cc.Invoke(ctx, QueryService_GetIndexesWithMapping_FullMethodName, in, out, cOpts...)
+	out := new(AuthLogsResponse)
+	err := c.cc.Invoke(ctx, QueryService_AuthLogs_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryServiceClient) PaymentLogs(ctx context.Context, in *PaymentLogsRequest, opts ...grpc.CallOption) (*PaymentLogsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PaymentLogsResponse)
+	err := c.cc.Invoke(ctx, QueryService_PaymentLogs_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryServiceClient) OrderLogs(ctx context.Context, in *OrderLogsRequest, opts ...grpc.CallOption) (*OrderLogsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(OrderLogsResponse)
+	err := c.cc.Invoke(ctx, QueryService_OrderLogs_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +75,9 @@ func (c *queryServiceClient) GetIndexesWithMapping(ctx context.Context, in *GetI
 // All implementations must embed UnimplementedQueryServiceServer
 // for forward compatibility.
 type QueryServiceServer interface {
-	GetIndexesWithMapping(context.Context, *GetIndexesWithMappingRequest) (*GetIndexesWithMappingResponse, error)
+	AuthLogs(context.Context, *AuthLogsRequest) (*AuthLogsResponse, error)
+	PaymentLogs(context.Context, *PaymentLogsRequest) (*PaymentLogsResponse, error)
+	OrderLogs(context.Context, *OrderLogsRequest) (*OrderLogsResponse, error)
 	mustEmbedUnimplementedQueryServiceServer()
 }
 
@@ -62,8 +88,14 @@ type QueryServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedQueryServiceServer struct{}
 
-func (UnimplementedQueryServiceServer) GetIndexesWithMapping(context.Context, *GetIndexesWithMappingRequest) (*GetIndexesWithMappingResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetIndexesWithMapping not implemented")
+func (UnimplementedQueryServiceServer) AuthLogs(context.Context, *AuthLogsRequest) (*AuthLogsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AuthLogs not implemented")
+}
+func (UnimplementedQueryServiceServer) PaymentLogs(context.Context, *PaymentLogsRequest) (*PaymentLogsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PaymentLogs not implemented")
+}
+func (UnimplementedQueryServiceServer) OrderLogs(context.Context, *OrderLogsRequest) (*OrderLogsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method OrderLogs not implemented")
 }
 func (UnimplementedQueryServiceServer) mustEmbedUnimplementedQueryServiceServer() {}
 func (UnimplementedQueryServiceServer) testEmbeddedByValue()                      {}
@@ -86,20 +118,56 @@ func RegisterQueryServiceServer(s grpc.ServiceRegistrar, srv QueryServiceServer)
 	s.RegisterService(&QueryService_ServiceDesc, srv)
 }
 
-func _QueryService_GetIndexesWithMapping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetIndexesWithMappingRequest)
+func _QueryService_AuthLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthLogsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServiceServer).GetIndexesWithMapping(ctx, in)
+		return srv.(QueryServiceServer).AuthLogs(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: QueryService_GetIndexesWithMapping_FullMethodName,
+		FullMethod: QueryService_AuthLogs_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServiceServer).GetIndexesWithMapping(ctx, req.(*GetIndexesWithMappingRequest))
+		return srv.(QueryServiceServer).AuthLogs(ctx, req.(*AuthLogsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _QueryService_PaymentLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PaymentLogsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServiceServer).PaymentLogs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: QueryService_PaymentLogs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServiceServer).PaymentLogs(ctx, req.(*PaymentLogsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _QueryService_OrderLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OrderLogsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServiceServer).OrderLogs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: QueryService_OrderLogs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServiceServer).OrderLogs(ctx, req.(*OrderLogsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -112,8 +180,16 @@ var QueryService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*QueryServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetIndexesWithMapping",
-			Handler:    _QueryService_GetIndexesWithMapping_Handler,
+			MethodName: "AuthLogs",
+			Handler:    _QueryService_AuthLogs_Handler,
+		},
+		{
+			MethodName: "PaymentLogs",
+			Handler:    _QueryService_PaymentLogs_Handler,
+		},
+		{
+			MethodName: "OrderLogs",
+			Handler:    _QueryService_OrderLogs_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

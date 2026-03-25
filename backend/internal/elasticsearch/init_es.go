@@ -8,13 +8,14 @@ import (
 	"github.com/mahirjain10/logflow/backend/internal/config"
 )
 
-func InitES(config config.Envs) (*elasticsearch.Client, error) {
+func InitES(config config.Envs) (*elasticsearch.Client, *elasticsearch.TypedClient, error) {
 	cfg := elasticsearch.Config{
 		Addresses: config.ElasticSearchHost,
 	}
 	es, err := elasticsearch.NewClient(cfg)
+	esTypedClient, err := elasticsearch.NewTypedClient(cfg)
 	if err != nil {
-		return nil, fmt.Errorf("Error creating client: %s", err)
+		return nil, nil, fmt.Errorf("Error creating client: %s", err)
 	}
 
 	res, err := es.Info()
@@ -24,5 +25,5 @@ func InitES(config config.Envs) (*elasticsearch.Client, error) {
 	defer res.Body.Close()
 
 	log.Println(res)
-	return es, nil
+	return es, esTypedClient, nil
 }

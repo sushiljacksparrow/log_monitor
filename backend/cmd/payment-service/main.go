@@ -7,8 +7,9 @@ import (
 	"time"
 
 	"github.com/mahirjain10/logflow/backend/internal/config"
+	"github.com/mahirjain10/logflow/backend/internal/constants"
+	"github.com/mahirjain10/logflow/backend/internal/ids"
 	"github.com/mahirjain10/logflow/backend/internal/kafka"
-	"github.com/mahirjain10/logflow/backend/internal/utils"
 )
 
 func main() {
@@ -25,22 +26,26 @@ func main() {
 		for _, logValue := range MockPaymentLog {
 			time.Sleep(3 * time.Second)
 			logValue["timestamp"] = time.Now().UTC().Format(time.RFC3339)
-			reqID, err := utils.GenerateUUID()
+			reqID, err := ids.GenerateUUID()
 			if err != nil {
 				log.Println(err)
 			}
-			paymentId, err := utils.GenerateUUID()
+			paymentId, err := ids.GenerateUUID()
 			if err != nil {
 				log.Println(err)
 			}
-			logValue["requestId"] = reqID
-			logValue["paymentId"] = paymentId
-			logValue["ip"] = utils.RandomIP()
+			orderId, err := ids.GenerateUUID()
+			if err != nil {
+				log.Println(err)
+			}
+			logValue["request_id"] = reqID
+			logValue["payment_id"] = paymentId
+			logValue["order_id"] = orderId
 			logByte, err := json.Marshal(logValue)
 			if err != nil {
 				log.Printf("error while marshalling log %v", err)
 			}
-			producer.Publish(envs.KafkaTopicPaymentLog, logByte)
+			producer.Publish(constants.PAYMENT_SERVICE_LOGS_TOPIC, logByte)
 			fmt.Println(logValue)
 		}
 	}

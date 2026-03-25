@@ -1,8 +1,8 @@
-.PHONY: auth log order payment query websocket clean \
-        docker-build docker-up docker-down docker-logs \
-        docker-auth docker-payment docker-log docker-order docker-query docker-websocket \
-        dev dev-no-cache
-
+.PHONY: auth log order payment query gateway clean \
+        dev dev-no-cache up down reset build infra proto logs \
+        docker-auth docker-payment docker-log docker-order docker-query docker-gateway \
+        down-auth down-payment down-log down-order down-query down-gateway \
+        logs-auth logs-payment logs-log logs-order logs-query logs-gateway
 # ─────────────────────────────────────
 # LOCAL — run directly on your machine
 # ─────────────────────────────────────
@@ -24,17 +24,16 @@ payment:
 query:
 	cd $(CMD_PATH)/query-service && air
 
-websocket:
-	cd $(CMD_PATH)/websocket-server && air
+gateway:
+	cd $(CMD_PATH)/api-gateway && air
 
 clean:
 	rm -rf $(BIN_PATH)
-
+	
 # ─────────────────────────────────────
 # DOCKER — run inside containers
 # ─────────────────────────────────────
 
-# build + start everything
 dev:
 	docker compose up --build
 
@@ -42,19 +41,15 @@ dev-no-cache:
 	docker compose build --no-cache
 	docker compose up
 
-# start everything (no rebuild)
 up:
 	docker compose up
 
-# stop everything
 down:
 	docker compose down
 
-# stop everything + wipe volumes (nuclear option)
 reset:
 	docker compose down -v
 
-# rebuild everything from scratch
 build:
 	docker compose build
 
@@ -70,7 +65,6 @@ docker-payment:
 
 docker-log:
 	docker compose up --build log-processor
-# 	docker compose up log-processor
 
 docker-order:
 	docker compose up --build order-service
@@ -78,9 +72,8 @@ docker-order:
 docker-query:
 	docker compose up --build query-service
 
-docker-websocket:
-	docker compose up --build websocket-server
-
+docker-gateway:
+	docker compose up --build api-gateway
 
 # ─────────────────────────────────────
 # DOCKER — stop specific services
@@ -101,8 +94,8 @@ down-order:
 down-query:
 	docker compose stop query-service
 
-down-websocket:
-	docker compose stop websocket-server
+down-gateway:
+	docker compose stop api-gateway
 
 # ─────────────────────────────────────
 # DOCKER — logs
@@ -126,8 +119,8 @@ logs-order:
 logs-query:
 	docker compose logs -f query-service
 
-logs-websocket:
-	docker compose logs -f websocket-server
+logs-gateway:
+	docker compose logs -f api-gateway
 
 # ─────────────────────────────────────
 # DOCKER — infra only (kafka + ES + kibana)

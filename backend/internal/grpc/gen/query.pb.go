@@ -9,6 +9,7 @@ package query
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -21,28 +22,34 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type IndexMapping struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IndexName     string                 `protobuf:"bytes,1,opt,name=index_name,json=indexName,proto3" json:"index_name,omitempty"`
-	Mapping       map[string]string      `protobuf:"bytes,2,rep,name=mapping,proto3" json:"mapping,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+type AuthLogsRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Service        *string                `protobuf:"bytes,1,opt,name=service,proto3,oneof" json:"service,omitempty"`
+	Level          *string                `protobuf:"bytes,2,opt,name=level,proto3,oneof" json:"level,omitempty"`
+	Message        *string                `protobuf:"bytes,3,opt,name=message,proto3,oneof" json:"message,omitempty"`
+	RequestId      *string                `protobuf:"bytes,4,opt,name=request_id,json=requestId,proto3,oneof" json:"request_id,omitempty"`
+	UserId         *string                `protobuf:"bytes,5,opt,name=user_id,json=userId,proto3,oneof" json:"user_id,omitempty"`
+	Ip             *string                `protobuf:"bytes,6,opt,name=ip,proto3,oneof" json:"ip,omitempty"`
+	StartTimestamp *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=start_timestamp,json=startTimestamp,proto3,oneof" json:"start_timestamp,omitempty"`
+	EndTimestamp   *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=end_timestamp,json=endTimestamp,proto3,oneof" json:"end_timestamp,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
-func (x *IndexMapping) Reset() {
-	*x = IndexMapping{}
+func (x *AuthLogsRequest) Reset() {
+	*x = AuthLogsRequest{}
 	mi := &file_query_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *IndexMapping) String() string {
+func (x *AuthLogsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*IndexMapping) ProtoMessage() {}
+func (*AuthLogsRequest) ProtoMessage() {}
 
-func (x *IndexMapping) ProtoReflect() protoreflect.Message {
+func (x *AuthLogsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_query_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -54,45 +61,97 @@ func (x *IndexMapping) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use IndexMapping.ProtoReflect.Descriptor instead.
-func (*IndexMapping) Descriptor() ([]byte, []int) {
+// Deprecated: Use AuthLogsRequest.ProtoReflect.Descriptor instead.
+func (*AuthLogsRequest) Descriptor() ([]byte, []int) {
 	return file_query_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *IndexMapping) GetIndexName() string {
-	if x != nil {
-		return x.IndexName
+func (x *AuthLogsRequest) GetService() string {
+	if x != nil && x.Service != nil {
+		return *x.Service
 	}
 	return ""
 }
 
-func (x *IndexMapping) GetMapping() map[string]string {
+func (x *AuthLogsRequest) GetLevel() string {
+	if x != nil && x.Level != nil {
+		return *x.Level
+	}
+	return ""
+}
+
+func (x *AuthLogsRequest) GetMessage() string {
+	if x != nil && x.Message != nil {
+		return *x.Message
+	}
+	return ""
+}
+
+func (x *AuthLogsRequest) GetRequestId() string {
+	if x != nil && x.RequestId != nil {
+		return *x.RequestId
+	}
+	return ""
+}
+
+func (x *AuthLogsRequest) GetUserId() string {
+	if x != nil && x.UserId != nil {
+		return *x.UserId
+	}
+	return ""
+}
+
+func (x *AuthLogsRequest) GetIp() string {
+	if x != nil && x.Ip != nil {
+		return *x.Ip
+	}
+	return ""
+}
+
+func (x *AuthLogsRequest) GetStartTimestamp() *timestamppb.Timestamp {
 	if x != nil {
-		return x.Mapping
+		return x.StartTimestamp
 	}
 	return nil
 }
 
-type GetIndexesWithMappingRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+func (x *AuthLogsRequest) GetEndTimestamp() *timestamppb.Timestamp {
+	if x != nil {
+		return x.EndTimestamp
+	}
+	return nil
 }
 
-func (x *GetIndexesWithMappingRequest) Reset() {
-	*x = GetIndexesWithMappingRequest{}
+type OrderLogsRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Service        *string                `protobuf:"bytes,1,opt,name=service,proto3,oneof" json:"service,omitempty"`
+	Level          *string                `protobuf:"bytes,2,opt,name=level,proto3,oneof" json:"level,omitempty"`
+	Message        *string                `protobuf:"bytes,3,opt,name=message,proto3,oneof" json:"message,omitempty"`
+	RequestId      *string                `protobuf:"bytes,4,opt,name=request_id,json=requestId,proto3,oneof" json:"request_id,omitempty"`
+	UserId         *string                `protobuf:"bytes,5,opt,name=user_id,json=userId,proto3,oneof" json:"user_id,omitempty"`
+	OrderId        *string                `protobuf:"bytes,6,opt,name=order_id,json=orderId,proto3,oneof" json:"order_id,omitempty"`
+	Carrier        *string                `protobuf:"bytes,7,opt,name=carrier,proto3,oneof" json:"carrier,omitempty"`
+	ProductId      *string                `protobuf:"bytes,8,opt,name=product_id,json=productId,proto3,oneof" json:"product_id,omitempty"`
+	StartTimestamp *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=start_timestamp,json=startTimestamp,proto3,oneof" json:"start_timestamp,omitempty"`
+	EndTimestamp   *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=end_timestamp,json=endTimestamp,proto3,oneof" json:"end_timestamp,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *OrderLogsRequest) Reset() {
+	*x = OrderLogsRequest{}
 	mi := &file_query_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetIndexesWithMappingRequest) String() string {
+func (x *OrderLogsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetIndexesWithMappingRequest) ProtoMessage() {}
+func (*OrderLogsRequest) ProtoMessage() {}
 
-func (x *GetIndexesWithMappingRequest) ProtoReflect() protoreflect.Message {
+func (x *OrderLogsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_query_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -104,32 +163,111 @@ func (x *GetIndexesWithMappingRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetIndexesWithMappingRequest.ProtoReflect.Descriptor instead.
-func (*GetIndexesWithMappingRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use OrderLogsRequest.ProtoReflect.Descriptor instead.
+func (*OrderLogsRequest) Descriptor() ([]byte, []int) {
 	return file_query_proto_rawDescGZIP(), []int{1}
 }
 
-type GetIndexesWithMappingResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Indexes       []*IndexMapping        `protobuf:"bytes,1,rep,name=indexes,proto3" json:"indexes,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+func (x *OrderLogsRequest) GetService() string {
+	if x != nil && x.Service != nil {
+		return *x.Service
+	}
+	return ""
 }
 
-func (x *GetIndexesWithMappingResponse) Reset() {
-	*x = GetIndexesWithMappingResponse{}
+func (x *OrderLogsRequest) GetLevel() string {
+	if x != nil && x.Level != nil {
+		return *x.Level
+	}
+	return ""
+}
+
+func (x *OrderLogsRequest) GetMessage() string {
+	if x != nil && x.Message != nil {
+		return *x.Message
+	}
+	return ""
+}
+
+func (x *OrderLogsRequest) GetRequestId() string {
+	if x != nil && x.RequestId != nil {
+		return *x.RequestId
+	}
+	return ""
+}
+
+func (x *OrderLogsRequest) GetUserId() string {
+	if x != nil && x.UserId != nil {
+		return *x.UserId
+	}
+	return ""
+}
+
+func (x *OrderLogsRequest) GetOrderId() string {
+	if x != nil && x.OrderId != nil {
+		return *x.OrderId
+	}
+	return ""
+}
+
+func (x *OrderLogsRequest) GetCarrier() string {
+	if x != nil && x.Carrier != nil {
+		return *x.Carrier
+	}
+	return ""
+}
+
+func (x *OrderLogsRequest) GetProductId() string {
+	if x != nil && x.ProductId != nil {
+		return *x.ProductId
+	}
+	return ""
+}
+
+func (x *OrderLogsRequest) GetStartTimestamp() *timestamppb.Timestamp {
+	if x != nil {
+		return x.StartTimestamp
+	}
+	return nil
+}
+
+func (x *OrderLogsRequest) GetEndTimestamp() *timestamppb.Timestamp {
+	if x != nil {
+		return x.EndTimestamp
+	}
+	return nil
+}
+
+type PaymentLogsRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Service        *string                `protobuf:"bytes,1,opt,name=service,proto3,oneof" json:"service,omitempty"`
+	Level          *string                `protobuf:"bytes,2,opt,name=level,proto3,oneof" json:"level,omitempty"`
+	Message        *string                `protobuf:"bytes,3,opt,name=message,proto3,oneof" json:"message,omitempty"`
+	RequestId      *string                `protobuf:"bytes,4,opt,name=request_id,json=requestId,proto3,oneof" json:"request_id,omitempty"`
+	OrderId        *string                `protobuf:"bytes,5,opt,name=order_id,json=orderId,proto3,oneof" json:"order_id,omitempty"`
+	PaymentId      *string                `protobuf:"bytes,6,opt,name=payment_id,json=paymentId,proto3,oneof" json:"payment_id,omitempty"`
+	Gateway        *string                `protobuf:"bytes,7,opt,name=gateway,proto3,oneof" json:"gateway,omitempty"`
+	Amount         *string                `protobuf:"bytes,8,opt,name=amount,proto3,oneof" json:"amount,omitempty"`
+	StartTimestamp *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=start_timestamp,json=startTimestamp,proto3,oneof" json:"start_timestamp,omitempty"`
+	EndTimestamp   *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=end_timestamp,json=endTimestamp,proto3,oneof" json:"end_timestamp,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *PaymentLogsRequest) Reset() {
+	*x = PaymentLogsRequest{}
 	mi := &file_query_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetIndexesWithMappingResponse) String() string {
+func (x *PaymentLogsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetIndexesWithMappingResponse) ProtoMessage() {}
+func (*PaymentLogsRequest) ProtoMessage() {}
 
-func (x *GetIndexesWithMappingResponse) ProtoReflect() protoreflect.Message {
+func (x *PaymentLogsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_query_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -141,14 +279,525 @@ func (x *GetIndexesWithMappingResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetIndexesWithMappingResponse.ProtoReflect.Descriptor instead.
-func (*GetIndexesWithMappingResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use PaymentLogsRequest.ProtoReflect.Descriptor instead.
+func (*PaymentLogsRequest) Descriptor() ([]byte, []int) {
 	return file_query_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *GetIndexesWithMappingResponse) GetIndexes() []*IndexMapping {
+func (x *PaymentLogsRequest) GetService() string {
+	if x != nil && x.Service != nil {
+		return *x.Service
+	}
+	return ""
+}
+
+func (x *PaymentLogsRequest) GetLevel() string {
+	if x != nil && x.Level != nil {
+		return *x.Level
+	}
+	return ""
+}
+
+func (x *PaymentLogsRequest) GetMessage() string {
+	if x != nil && x.Message != nil {
+		return *x.Message
+	}
+	return ""
+}
+
+func (x *PaymentLogsRequest) GetRequestId() string {
+	if x != nil && x.RequestId != nil {
+		return *x.RequestId
+	}
+	return ""
+}
+
+func (x *PaymentLogsRequest) GetOrderId() string {
+	if x != nil && x.OrderId != nil {
+		return *x.OrderId
+	}
+	return ""
+}
+
+func (x *PaymentLogsRequest) GetPaymentId() string {
+	if x != nil && x.PaymentId != nil {
+		return *x.PaymentId
+	}
+	return ""
+}
+
+func (x *PaymentLogsRequest) GetGateway() string {
+	if x != nil && x.Gateway != nil {
+		return *x.Gateway
+	}
+	return ""
+}
+
+func (x *PaymentLogsRequest) GetAmount() string {
+	if x != nil && x.Amount != nil {
+		return *x.Amount
+	}
+	return ""
+}
+
+func (x *PaymentLogsRequest) GetStartTimestamp() *timestamppb.Timestamp {
 	if x != nil {
-		return x.Indexes
+		return x.StartTimestamp
+	}
+	return nil
+}
+
+func (x *PaymentLogsRequest) GetEndTimestamp() *timestamppb.Timestamp {
+	if x != nil {
+		return x.EndTimestamp
+	}
+	return nil
+}
+
+type AuthLogs struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Service       string                 `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
+	Level         string                 `protobuf:"bytes,2,opt,name=level,proto3" json:"level,omitempty"`
+	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	RequestId     string                 `protobuf:"bytes,4,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,5,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Ip            string                 `protobuf:"bytes,6,opt,name=ip,proto3" json:"ip,omitempty"`
+	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuthLogs) Reset() {
+	*x = AuthLogs{}
+	mi := &file_query_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuthLogs) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthLogs) ProtoMessage() {}
+
+func (x *AuthLogs) ProtoReflect() protoreflect.Message {
+	mi := &file_query_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthLogs.ProtoReflect.Descriptor instead.
+func (*AuthLogs) Descriptor() ([]byte, []int) {
+	return file_query_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *AuthLogs) GetService() string {
+	if x != nil {
+		return x.Service
+	}
+	return ""
+}
+
+func (x *AuthLogs) GetLevel() string {
+	if x != nil {
+		return x.Level
+	}
+	return ""
+}
+
+func (x *AuthLogs) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *AuthLogs) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *AuthLogs) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *AuthLogs) GetIp() string {
+	if x != nil {
+		return x.Ip
+	}
+	return ""
+}
+
+func (x *AuthLogs) GetTimestamp() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Timestamp
+	}
+	return nil
+}
+
+type OrderLogs struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Service       string                 `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
+	Level         string                 `protobuf:"bytes,2,opt,name=level,proto3" json:"level,omitempty"`
+	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	RequestId     string                 `protobuf:"bytes,4,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,5,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	OrderId       string                 `protobuf:"bytes,6,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	Carrier       string                 `protobuf:"bytes,7,opt,name=carrier,proto3" json:"carrier,omitempty"`
+	ProductId     string                 `protobuf:"bytes,8,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
+	StockLeft     int32                  `protobuf:"varint,9,opt,name=stock_left,json=stockLeft,proto3" json:"stock_left,omitempty"`
+	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrderLogs) Reset() {
+	*x = OrderLogs{}
+	mi := &file_query_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrderLogs) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrderLogs) ProtoMessage() {}
+
+func (x *OrderLogs) ProtoReflect() protoreflect.Message {
+	mi := &file_query_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrderLogs.ProtoReflect.Descriptor instead.
+func (*OrderLogs) Descriptor() ([]byte, []int) {
+	return file_query_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *OrderLogs) GetService() string {
+	if x != nil {
+		return x.Service
+	}
+	return ""
+}
+
+func (x *OrderLogs) GetLevel() string {
+	if x != nil {
+		return x.Level
+	}
+	return ""
+}
+
+func (x *OrderLogs) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *OrderLogs) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *OrderLogs) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *OrderLogs) GetOrderId() string {
+	if x != nil {
+		return x.OrderId
+	}
+	return ""
+}
+
+func (x *OrderLogs) GetCarrier() string {
+	if x != nil {
+		return x.Carrier
+	}
+	return ""
+}
+
+func (x *OrderLogs) GetProductId() string {
+	if x != nil {
+		return x.ProductId
+	}
+	return ""
+}
+
+func (x *OrderLogs) GetStockLeft() int32 {
+	if x != nil {
+		return x.StockLeft
+	}
+	return 0
+}
+
+func (x *OrderLogs) GetTimestamp() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Timestamp
+	}
+	return nil
+}
+
+type PaymentLogs struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Service       string                 `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
+	Level         string                 `protobuf:"bytes,2,opt,name=level,proto3" json:"level,omitempty"`
+	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	RequestId     string                 `protobuf:"bytes,4,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	OrderId       string                 `protobuf:"bytes,5,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	PaymentId     string                 `protobuf:"bytes,6,opt,name=payment_id,json=paymentId,proto3" json:"payment_id,omitempty"`
+	Gateway       string                 `protobuf:"bytes,7,opt,name=gateway,proto3" json:"gateway,omitempty"`
+	Amount        string                 `protobuf:"bytes,8,opt,name=amount,proto3" json:"amount,omitempty"`
+	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PaymentLogs) Reset() {
+	*x = PaymentLogs{}
+	mi := &file_query_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PaymentLogs) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PaymentLogs) ProtoMessage() {}
+
+func (x *PaymentLogs) ProtoReflect() protoreflect.Message {
+	mi := &file_query_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PaymentLogs.ProtoReflect.Descriptor instead.
+func (*PaymentLogs) Descriptor() ([]byte, []int) {
+	return file_query_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *PaymentLogs) GetService() string {
+	if x != nil {
+		return x.Service
+	}
+	return ""
+}
+
+func (x *PaymentLogs) GetLevel() string {
+	if x != nil {
+		return x.Level
+	}
+	return ""
+}
+
+func (x *PaymentLogs) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *PaymentLogs) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *PaymentLogs) GetOrderId() string {
+	if x != nil {
+		return x.OrderId
+	}
+	return ""
+}
+
+func (x *PaymentLogs) GetPaymentId() string {
+	if x != nil {
+		return x.PaymentId
+	}
+	return ""
+}
+
+func (x *PaymentLogs) GetGateway() string {
+	if x != nil {
+		return x.Gateway
+	}
+	return ""
+}
+
+func (x *PaymentLogs) GetAmount() string {
+	if x != nil {
+		return x.Amount
+	}
+	return ""
+}
+
+func (x *PaymentLogs) GetTimestamp() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Timestamp
+	}
+	return nil
+}
+
+type AuthLogsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Logs          []*AuthLogs            `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuthLogsResponse) Reset() {
+	*x = AuthLogsResponse{}
+	mi := &file_query_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuthLogsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthLogsResponse) ProtoMessage() {}
+
+func (x *AuthLogsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_query_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthLogsResponse.ProtoReflect.Descriptor instead.
+func (*AuthLogsResponse) Descriptor() ([]byte, []int) {
+	return file_query_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *AuthLogsResponse) GetLogs() []*AuthLogs {
+	if x != nil {
+		return x.Logs
+	}
+	return nil
+}
+
+type OrderLogsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Logs          []*OrderLogs           `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrderLogsResponse) Reset() {
+	*x = OrderLogsResponse{}
+	mi := &file_query_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrderLogsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrderLogsResponse) ProtoMessage() {}
+
+func (x *OrderLogsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_query_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrderLogsResponse.ProtoReflect.Descriptor instead.
+func (*OrderLogsResponse) Descriptor() ([]byte, []int) {
+	return file_query_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *OrderLogsResponse) GetLogs() []*OrderLogs {
+	if x != nil {
+		return x.Logs
+	}
+	return nil
+}
+
+type PaymentLogsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Logs          []*PaymentLogs         `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PaymentLogsResponse) Reset() {
+	*x = PaymentLogsResponse{}
+	mi := &file_query_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PaymentLogsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PaymentLogsResponse) ProtoMessage() {}
+
+func (x *PaymentLogsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_query_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PaymentLogsResponse.ProtoReflect.Descriptor instead.
+func (*PaymentLogsResponse) Descriptor() ([]byte, []int) {
+	return file_query_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *PaymentLogsResponse) GetLogs() []*PaymentLogs {
+	if x != nil {
+		return x.Logs
 	}
 	return nil
 }
@@ -157,19 +806,129 @@ var File_query_proto protoreflect.FileDescriptor
 
 const file_query_proto_rawDesc = "" +
 	"\n" +
-	"\vquery.proto\x12\x05query\"\xa5\x01\n" +
-	"\fIndexMapping\x12\x1d\n" +
+	"\vquery.proto\x12\x05query\x1a\x1fgoogle/protobuf/timestamp.proto\"\xbb\x03\n" +
+	"\x0fAuthLogsRequest\x12\x1d\n" +
+	"\aservice\x18\x01 \x01(\tH\x00R\aservice\x88\x01\x01\x12\x19\n" +
+	"\x05level\x18\x02 \x01(\tH\x01R\x05level\x88\x01\x01\x12\x1d\n" +
+	"\amessage\x18\x03 \x01(\tH\x02R\amessage\x88\x01\x01\x12\"\n" +
 	"\n" +
-	"index_name\x18\x01 \x01(\tR\tindexName\x12:\n" +
-	"\amapping\x18\x02 \x03(\v2 .query.IndexMapping.MappingEntryR\amapping\x1a:\n" +
-	"\fMappingEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x1e\n" +
-	"\x1cGetIndexesWithMappingRequest\"N\n" +
-	"\x1dGetIndexesWithMappingResponse\x12-\n" +
-	"\aindexes\x18\x01 \x03(\v2\x13.query.IndexMappingR\aindexes2r\n" +
-	"\fQueryService\x12b\n" +
-	"\x15GetIndexesWithMapping\x12#.query.GetIndexesWithMappingRequest\x1a$.query.GetIndexesWithMappingResponseB\x1fZ\x1dinternal/grpc/gen/query;queryb\x06proto3"
+	"request_id\x18\x04 \x01(\tH\x03R\trequestId\x88\x01\x01\x12\x1c\n" +
+	"\auser_id\x18\x05 \x01(\tH\x04R\x06userId\x88\x01\x01\x12\x13\n" +
+	"\x02ip\x18\x06 \x01(\tH\x05R\x02ip\x88\x01\x01\x12H\n" +
+	"\x0fstart_timestamp\x18\a \x01(\v2\x1a.google.protobuf.TimestampH\x06R\x0estartTimestamp\x88\x01\x01\x12D\n" +
+	"\rend_timestamp\x18\b \x01(\v2\x1a.google.protobuf.TimestampH\aR\fendTimestamp\x88\x01\x01B\n" +
+	"\n" +
+	"\b_serviceB\b\n" +
+	"\x06_levelB\n" +
+	"\n" +
+	"\b_messageB\r\n" +
+	"\v_request_idB\n" +
+	"\n" +
+	"\b_user_idB\x05\n" +
+	"\x03_ipB\x12\n" +
+	"\x10_start_timestampB\x10\n" +
+	"\x0e_end_timestamp\"\xab\x04\n" +
+	"\x10OrderLogsRequest\x12\x1d\n" +
+	"\aservice\x18\x01 \x01(\tH\x00R\aservice\x88\x01\x01\x12\x19\n" +
+	"\x05level\x18\x02 \x01(\tH\x01R\x05level\x88\x01\x01\x12\x1d\n" +
+	"\amessage\x18\x03 \x01(\tH\x02R\amessage\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"request_id\x18\x04 \x01(\tH\x03R\trequestId\x88\x01\x01\x12\x1c\n" +
+	"\auser_id\x18\x05 \x01(\tH\x04R\x06userId\x88\x01\x01\x12\x1e\n" +
+	"\border_id\x18\x06 \x01(\tH\x05R\aorderId\x88\x01\x01\x12\x1d\n" +
+	"\acarrier\x18\a \x01(\tH\x06R\acarrier\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"product_id\x18\b \x01(\tH\aR\tproductId\x88\x01\x01\x12H\n" +
+	"\x0fstart_timestamp\x18\t \x01(\v2\x1a.google.protobuf.TimestampH\bR\x0estartTimestamp\x88\x01\x01\x12D\n" +
+	"\rend_timestamp\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampH\tR\fendTimestamp\x88\x01\x01B\n" +
+	"\n" +
+	"\b_serviceB\b\n" +
+	"\x06_levelB\n" +
+	"\n" +
+	"\b_messageB\r\n" +
+	"\v_request_idB\n" +
+	"\n" +
+	"\b_user_idB\v\n" +
+	"\t_order_idB\n" +
+	"\n" +
+	"\b_carrierB\r\n" +
+	"\v_product_idB\x12\n" +
+	"\x10_start_timestampB\x10\n" +
+	"\x0e_end_timestamp\"\xab\x04\n" +
+	"\x12PaymentLogsRequest\x12\x1d\n" +
+	"\aservice\x18\x01 \x01(\tH\x00R\aservice\x88\x01\x01\x12\x19\n" +
+	"\x05level\x18\x02 \x01(\tH\x01R\x05level\x88\x01\x01\x12\x1d\n" +
+	"\amessage\x18\x03 \x01(\tH\x02R\amessage\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"request_id\x18\x04 \x01(\tH\x03R\trequestId\x88\x01\x01\x12\x1e\n" +
+	"\border_id\x18\x05 \x01(\tH\x04R\aorderId\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"payment_id\x18\x06 \x01(\tH\x05R\tpaymentId\x88\x01\x01\x12\x1d\n" +
+	"\agateway\x18\a \x01(\tH\x06R\agateway\x88\x01\x01\x12\x1b\n" +
+	"\x06amount\x18\b \x01(\tH\aR\x06amount\x88\x01\x01\x12H\n" +
+	"\x0fstart_timestamp\x18\t \x01(\v2\x1a.google.protobuf.TimestampH\bR\x0estartTimestamp\x88\x01\x01\x12D\n" +
+	"\rend_timestamp\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampH\tR\fendTimestamp\x88\x01\x01B\n" +
+	"\n" +
+	"\b_serviceB\b\n" +
+	"\x06_levelB\n" +
+	"\n" +
+	"\b_messageB\r\n" +
+	"\v_request_idB\v\n" +
+	"\t_order_idB\r\n" +
+	"\v_payment_idB\n" +
+	"\n" +
+	"\b_gatewayB\t\n" +
+	"\a_amountB\x12\n" +
+	"\x10_start_timestampB\x10\n" +
+	"\x0e_end_timestamp\"\xd6\x01\n" +
+	"\bAuthLogs\x12\x18\n" +
+	"\aservice\x18\x01 \x01(\tR\aservice\x12\x14\n" +
+	"\x05level\x18\x02 \x01(\tR\x05level\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x04 \x01(\tR\trequestId\x12\x17\n" +
+	"\auser_id\x18\x05 \x01(\tR\x06userId\x12\x0e\n" +
+	"\x02ip\x18\x06 \x01(\tR\x02ip\x128\n" +
+	"\ttimestamp\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\"\xba\x02\n" +
+	"\tOrderLogs\x12\x18\n" +
+	"\aservice\x18\x01 \x01(\tR\aservice\x12\x14\n" +
+	"\x05level\x18\x02 \x01(\tR\x05level\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x04 \x01(\tR\trequestId\x12\x17\n" +
+	"\auser_id\x18\x05 \x01(\tR\x06userId\x12\x19\n" +
+	"\border_id\x18\x06 \x01(\tR\aorderId\x12\x18\n" +
+	"\acarrier\x18\a \x01(\tR\acarrier\x12\x1d\n" +
+	"\n" +
+	"product_id\x18\b \x01(\tR\tproductId\x12\x1d\n" +
+	"\n" +
+	"stock_left\x18\t \x01(\x05R\tstockLeft\x128\n" +
+	"\ttimestamp\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\"\x9c\x02\n" +
+	"\vPaymentLogs\x12\x18\n" +
+	"\aservice\x18\x01 \x01(\tR\aservice\x12\x14\n" +
+	"\x05level\x18\x02 \x01(\tR\x05level\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x04 \x01(\tR\trequestId\x12\x19\n" +
+	"\border_id\x18\x05 \x01(\tR\aorderId\x12\x1d\n" +
+	"\n" +
+	"payment_id\x18\x06 \x01(\tR\tpaymentId\x12\x18\n" +
+	"\agateway\x18\a \x01(\tR\agateway\x12\x16\n" +
+	"\x06amount\x18\b \x01(\tR\x06amount\x128\n" +
+	"\ttimestamp\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\"7\n" +
+	"\x10AuthLogsResponse\x12#\n" +
+	"\x04logs\x18\x01 \x03(\v2\x0f.query.AuthLogsR\x04logs\"9\n" +
+	"\x11OrderLogsResponse\x12$\n" +
+	"\x04logs\x18\x01 \x03(\v2\x10.query.OrderLogsR\x04logs\"=\n" +
+	"\x13PaymentLogsResponse\x12&\n" +
+	"\x04logs\x18\x01 \x03(\v2\x12.query.PaymentLogsR\x04logs2\xd1\x01\n" +
+	"\fQueryService\x12;\n" +
+	"\bAuthLogs\x12\x16.query.AuthLogsRequest\x1a\x17.query.AuthLogsResponse\x12D\n" +
+	"\vPaymentLogs\x12\x19.query.PaymentLogsRequest\x1a\x1a.query.PaymentLogsResponse\x12>\n" +
+	"\tOrderLogs\x12\x17.query.OrderLogsRequest\x1a\x18.query.OrderLogsResponseB\x1fZ\x1dinternal/grpc/gen/query;queryb\x06proto3"
 
 var (
 	file_query_proto_rawDescOnce sync.Once
@@ -183,23 +942,43 @@ func file_query_proto_rawDescGZIP() []byte {
 	return file_query_proto_rawDescData
 }
 
-var file_query_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_query_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_query_proto_goTypes = []any{
-	(*IndexMapping)(nil),                  // 0: query.IndexMapping
-	(*GetIndexesWithMappingRequest)(nil),  // 1: query.GetIndexesWithMappingRequest
-	(*GetIndexesWithMappingResponse)(nil), // 2: query.GetIndexesWithMappingResponse
-	nil,                                   // 3: query.IndexMapping.MappingEntry
+	(*AuthLogsRequest)(nil),       // 0: query.AuthLogsRequest
+	(*OrderLogsRequest)(nil),      // 1: query.OrderLogsRequest
+	(*PaymentLogsRequest)(nil),    // 2: query.PaymentLogsRequest
+	(*AuthLogs)(nil),              // 3: query.AuthLogs
+	(*OrderLogs)(nil),             // 4: query.OrderLogs
+	(*PaymentLogs)(nil),           // 5: query.PaymentLogs
+	(*AuthLogsResponse)(nil),      // 6: query.AuthLogsResponse
+	(*OrderLogsResponse)(nil),     // 7: query.OrderLogsResponse
+	(*PaymentLogsResponse)(nil),   // 8: query.PaymentLogsResponse
+	(*timestamppb.Timestamp)(nil), // 9: google.protobuf.Timestamp
 }
 var file_query_proto_depIdxs = []int32{
-	3, // 0: query.IndexMapping.mapping:type_name -> query.IndexMapping.MappingEntry
-	0, // 1: query.GetIndexesWithMappingResponse.indexes:type_name -> query.IndexMapping
-	1, // 2: query.QueryService.GetIndexesWithMapping:input_type -> query.GetIndexesWithMappingRequest
-	2, // 3: query.QueryService.GetIndexesWithMapping:output_type -> query.GetIndexesWithMappingResponse
-	3, // [3:4] is the sub-list for method output_type
-	2, // [2:3] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	9,  // 0: query.AuthLogsRequest.start_timestamp:type_name -> google.protobuf.Timestamp
+	9,  // 1: query.AuthLogsRequest.end_timestamp:type_name -> google.protobuf.Timestamp
+	9,  // 2: query.OrderLogsRequest.start_timestamp:type_name -> google.protobuf.Timestamp
+	9,  // 3: query.OrderLogsRequest.end_timestamp:type_name -> google.protobuf.Timestamp
+	9,  // 4: query.PaymentLogsRequest.start_timestamp:type_name -> google.protobuf.Timestamp
+	9,  // 5: query.PaymentLogsRequest.end_timestamp:type_name -> google.protobuf.Timestamp
+	9,  // 6: query.AuthLogs.timestamp:type_name -> google.protobuf.Timestamp
+	9,  // 7: query.OrderLogs.timestamp:type_name -> google.protobuf.Timestamp
+	9,  // 8: query.PaymentLogs.timestamp:type_name -> google.protobuf.Timestamp
+	3,  // 9: query.AuthLogsResponse.logs:type_name -> query.AuthLogs
+	4,  // 10: query.OrderLogsResponse.logs:type_name -> query.OrderLogs
+	5,  // 11: query.PaymentLogsResponse.logs:type_name -> query.PaymentLogs
+	0,  // 12: query.QueryService.AuthLogs:input_type -> query.AuthLogsRequest
+	2,  // 13: query.QueryService.PaymentLogs:input_type -> query.PaymentLogsRequest
+	1,  // 14: query.QueryService.OrderLogs:input_type -> query.OrderLogsRequest
+	6,  // 15: query.QueryService.AuthLogs:output_type -> query.AuthLogsResponse
+	8,  // 16: query.QueryService.PaymentLogs:output_type -> query.PaymentLogsResponse
+	7,  // 17: query.QueryService.OrderLogs:output_type -> query.OrderLogsResponse
+	15, // [15:18] is the sub-list for method output_type
+	12, // [12:15] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_query_proto_init() }
@@ -207,13 +986,16 @@ func file_query_proto_init() {
 	if File_query_proto != nil {
 		return
 	}
+	file_query_proto_msgTypes[0].OneofWrappers = []any{}
+	file_query_proto_msgTypes[1].OneofWrappers = []any{}
+	file_query_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_query_proto_rawDesc), len(file_query_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

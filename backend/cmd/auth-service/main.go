@@ -7,8 +7,10 @@ import (
 	"time"
 
 	"github.com/mahirjain10/logflow/backend/internal/config"
+	"github.com/mahirjain10/logflow/backend/internal/constants"
+	"github.com/mahirjain10/logflow/backend/internal/ids"
 	"github.com/mahirjain10/logflow/backend/internal/kafka"
-	"github.com/mahirjain10/logflow/backend/internal/utils"
+	"github.com/mahirjain10/logflow/backend/internal/network"
 )
 
 func main() {
@@ -25,23 +27,23 @@ func main() {
 		for _, logValue := range MockAuthLog {
 			time.Sleep(3 * time.Second)
 			logValue["timestamp"] = time.Now().UTC().Format(time.RFC3339)
-			reqID, err := utils.GenerateUUID()
+			reqID, err := ids.GenerateUUID()
 			if err != nil {
 				log.Println(err)
 			}
-			userID, err := utils.GenerateUUID()
+			userID, err := ids.GenerateUUID()
 			if err != nil {
 				log.Println(err)
 			}
-			logValue["requestId"] = reqID
-			logValue["userId"] = userID
-			logValue["ip"] = utils.RandomIP()
+			logValue["request_id"] = reqID
+			logValue["user_id"] = userID
+			logValue["ip"] = network.RandomIP()
 			logByte, err := json.Marshal(logValue)
 			if err != nil {
 				log.Printf("error while marshalling log %v", err)
 			}
 
-			producer.Publish(envs.KafkaTopicAuthLog, logByte)
+			producer.Publish(constants.AUTH_SERVICE_LOGS_TOPIC, logByte)
 			fmt.Println(logValue)
 		}
 	}

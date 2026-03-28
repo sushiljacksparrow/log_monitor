@@ -6,71 +6,47 @@ import (
 	"log"
 
 	"github.com/IBM/sarama"
-	"github.com/elastic/go-elasticsearch/v9/esutil"
-	"github.com/mahirjain10/logflow/backend/internal/common/types"
 	"github.com/mahirjain10/logflow/backend/internal/config"
+	"github.com/mahirjain10/logflow/backend/internal/constants"
 	"github.com/mahirjain10/logflow/backend/internal/elasticsearch"
 	"github.com/mahirjain10/logflow/backend/internal/kafka"
+	logprocessor "github.com/mahirjain10/logflow/backend/internal/log-processor"
 )
 
-// func initAuthServiceLogIndex(es *es.Client) (int, error) {
-// 	mapping := `{
-//   "mappings": {
-//     "properties": {
-//       "service":   { "type": "keyword" },
-//       "level":     { "type": "keyword" },
-//       "message":   { "type": "text" },
-//       "requestId": { "type": "keyword" },
-//       "userId":    { "type": "keyword" },
-//       "ip":        { "type": "keyword" },
-//       "timestamp": { "type": "date" }
-//     }
-// 		}
-// 	}`
-
-//		res, err := es.Indices.Create(
-//			AUTH_SERVICE_LOGS,
-//			es.Indices.Create.WithBody(strings.NewReader(mapping)),
-//		)
-//		if err != nil {
-//			return 0, fmt.Errorf("failed to create auth-service-logs index: %w", err)
-//		}
-//		log.Println(res)
-//		log.Println("auth-service-logs index created:", res.StatusCode)
-//		return res.StatusCode, nil
-//	}
-
 func main() {
-	var bulkIndexers *types.BulkIndexers
-	bulkIndexers = &types.BulkIndexers{}
+	indexMappings := map[string]string{
+		constants.AUTH_SERVICE_LOGS_INDEX:    logprocessor.AuthServiceLogMapping,
+		constants.ORDER_SERVICE_LOGS_INDEX:   logprocessor.OrderServiceLogMapping,
+		constants.PAYMENT_SERVICE_LOGS_INDEX: logprocessor.PaymentServiceLogMapping,
+	}
+	bulkIndexers := &logprocessor.BulkIndexers{}
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	config, err := config.InitConfig()
 	if err != nil {
 		log.Fatalf("error while initalizing config: %v", err)
 	}
-	esClient, err := elasticsearch.InitES(config)
+	esClient, _, err := elasticsearch.InitES(config)
 	if err != nil {
 		log.Fatal(err)
 	}
-	var bulkIndexer esutil.BulkIndexer
-	for k, v := range IndexMappings {
+	for k, v := range indexMappings {
 		err = elasticsearch.EnsureIndex(esClient, k, v)
 		if err != nil {
 			log.Println(err)
 		}
-		bulkIndexer, err = InitBulkIndexer(esClient, k)
+		bulkIndexer, err := logprocessor.InitBulkIndexer(esClient, k)
 		if err != nil {
 			log.Printf("couldnt build bulk indexer for %s: %v", k, err)
 		}
-		EsBgCtx := context.Background()
-		defer bulkIndexer.Close(EsBgCtx)
+		esBgCtx := context.Background()
+		defer bulkIndexer.Close(esBgCtx)
 		switch k {
-		case AUTH_SERVICE_LOGS:
+		case constants.AUTH_SERVICE_LOGS_INDEX:
 			bulkIndexers.AuthBulkIndexer = bulkIndexer
-		case ORDER_SERVICE_LOGS:
+		case constants.ORDER_SERVICE_LOGS_INDEX:
 			bulkIndexers.OrderBulkIndexer = bulkIndexer
-		case PAYMENT_SERVICE_LOGS:
+		case constants.PAYMENT_SERVICE_LOGS_INDEX:
 			bulkIndexers.PaymentBulkIndexer = bulkIndexer
 		default:
 		}
@@ -86,9 +62,10 @@ func main() {
 		log.Printf("error while initalizing a consumer with group ID: %s - %v ", config.KafkaTopicLogGroupID, err)
 	}
 	fmt.Println("Consumption starting")
-	topics := []string{config.KafkaTopicAuthLog, config.KafkaTopicOrderLog, config.KafkaTopicPaymentLog}
+
+	topics := []string{constants.AUTH_SERVICE_LOGS_TOPIC, constants.ORDER_SERVICE_LOGS_TOPIC, constants.PAYMENT_SERVICE_LOGS_TOPIC}
 	if err := consumer.Start(ctx, topics, func(msg *sarama.ConsumerMessage) error {
-		return ConsumeKafka(msg, bulkIndexers, producer)
+		return logprocessor.ConsumeKafka(msg, bulkIndexers, producer)
 	}); err != nil {
 		log.Println("failed to consumed message: ", err)
 	}

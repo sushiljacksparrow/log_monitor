@@ -1,4 +1,4 @@
-package types
+package logprocessor
 
 import "github.com/elastic/go-elasticsearch/v9/esutil"
 

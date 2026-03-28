@@ -1,16 +1,102 @@
 syntax = "proto3";
 package query;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "internal/grpc/gen/query;query";
 
-message IndexMapping {
-  string index_name = 1;
-  map<string, string> mapping = 2;
-}
-message GetIndexesWithMappingRequest {}
-message GetIndexesWithMappingResponse {
-  repeated IndexMapping indexes = 1;
-}
 service QueryService {
-  rpc GetIndexesWithMapping(GetIndexesWithMappingRequest) returns (GetIndexesWithMappingResponse);
+  rpc AuthLogs(AuthLogsRequest) returns (AuthLogsResponse);
+  rpc PaymentLogs(PaymentLogsRequest) returns (PaymentLogsResponse);
+  rpc OrderLogs(OrderLogsRequest) returns (OrderLogsResponse);
+}
+
+// --- Requests ---
+
+message AuthLogsRequest {
+  optional string service = 1;
+  optional string level = 2;
+  optional string message = 3;
+  optional string request_id = 4;
+  optional string user_id = 5;
+  optional string ip = 6;
+  optional google.protobuf.Timestamp start_timestamp = 7;
+  optional google.protobuf.Timestamp end_timestamp = 8;
+}
+
+message OrderLogsRequest {
+  optional string service = 1;
+  optional string level = 2;
+  optional string message = 3;
+  optional string request_id = 4;
+  optional string user_id = 5;
+  optional string order_id = 6;
+  optional string carrier = 7;
+  optional string product_id = 8;
+  optional google.protobuf.Timestamp start_timestamp = 9;
+  optional google.protobuf.Timestamp end_timestamp = 10;
+}
+
+message PaymentLogsRequest {
+  optional string service = 1;
+  optional string level = 2;
+  optional string message = 3;
+  optional string request_id = 4;
+  optional string order_id = 5;
+  optional string payment_id = 6;
+  optional string gateway = 7;
+  optional string amount = 8;
+  optional google.protobuf.Timestamp start_timestamp = 9;
+  optional google.protobuf.Timestamp end_timestamp = 10;
+}
+
+// --- Response Messages ---
+
+message AuthLogs {
+  string service = 1;
+  string level = 2;
+  string message = 3;
+  string request_id = 4;
+  string user_id = 5;
+  string ip = 6;
+  google.protobuf.Timestamp timestamp = 7;
+}
+
+message OrderLogs {
+  string service = 1;
+  string level = 2;
+  string message = 3;
+  string request_id = 4;
+  string user_id = 5;
+  string order_id = 6;
+  string carrier = 7;
+  string product_id = 8;
+  int32 stock_left = 9;
+  google.protobuf.Timestamp timestamp = 10;
+}
+
+message PaymentLogs {
+  string service = 1;
+  string level = 2;
+  string message = 3;
+  string request_id = 4;
+  string order_id = 5;
+  string payment_id = 6;
+  string gateway = 7;
+  string amount = 8;
+  google.protobuf.Timestamp timestamp = 9;
+}
+
+// --- Responses ---
+
+message AuthLogsResponse {
+  repeated AuthLogs logs = 1;
+}
+
+message OrderLogsResponse {
+  repeated OrderLogs logs = 1;
+}
+
+message PaymentLogsResponse {
+  repeated PaymentLogs logs = 1;
 }

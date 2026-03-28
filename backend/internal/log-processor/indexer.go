@@ -12,8 +12,8 @@ import (
 	es "github.com/elastic/go-elasticsearch/v9"
 	"github.com/elastic/go-elasticsearch/v9/esutil"
 	"github.com/mahirjain10/logflow/backend/internal/constants"
-	"github.com/mahirjain10/logflow/backend/internal/ids"
 	"github.com/mahirjain10/logflow/backend/internal/kafka"
+	"github.com/mahirjain10/logflow/backend/internal/utils"
 )
 
 type DLQMessage struct {
@@ -26,7 +26,7 @@ type DLQMessage struct {
 
 func AddIndex(ctx context.Context, esIndexer esutil.BulkIndexer, indexName, body string, retryMap *RetryMap, producer *kafka.Producer) error {
 	initialBackoff := time.Second
-	uuid, err := ids.GenerateUUID()
+	uuid, err := utils.GenerateUUID()
 	if err != nil {
 		return fmt.Errorf("error while generating UUID for index: %s", indexName)
 	}
@@ -37,7 +37,7 @@ func AddIndex(ctx context.Context, esIndexer esutil.BulkIndexer, indexName, body
 		DocumentID: uuid,
 		Body:       strings.NewReader(body),
 		OnSuccess: func(ctx context.Context, item esutil.BulkIndexerItem, res esutil.BulkIndexerResponseItem) {
-			log.Printf("Indexed: %s for index: %s", item.DocumentID, indexName)
+			log.Printf("Indexed: %s for index: %s\n", item.DocumentID, indexName)
 			producer.Publish(constants.LIVE_LOGS_TOPIC, []byte(body))
 		},
 		OnFailure: func(ctx context.Context, item esutil.BulkIndexerItem, res esutil.BulkIndexerResponseItem, err error) {
@@ -77,7 +77,7 @@ func AddIndex(ctx context.Context, esIndexer esutil.BulkIndexer, indexName, body
 						}
 					}()
 				} else {
-					log.Printf("DLQ: %s exhausted retries", item.DocumentID)
+					log.Printf("DLQ: %s exhausted retries\n", item.DocumentID)
 				}
 			case 400, 404:
 				dlq := DLQMessage{
@@ -89,7 +89,7 @@ func AddIndex(ctx context.Context, esIndexer esutil.BulkIndexer, indexName, body
 				}
 				data, _ := json.Marshal(dlq)
 				producer.Publish(constants.LOGS_DLQ_TOPIC, data)
-				log.Printf("DLQ: %s status=%d reason=%s", item.DocumentID, res.Status, res.Error.Reason)
+				log.Printf("DLQ: %s status=%d reason=%s\n", item.DocumentID, res.Status, res.Error.Reason)
 			}
 		},
 	})

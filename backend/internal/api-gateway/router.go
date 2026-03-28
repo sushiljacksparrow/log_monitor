@@ -10,9 +10,9 @@ func RegisterRoutes(engine *gin.Engine, grpcClient *GRPCClient, hub *livews.Hub)
 
 	search := api.Group("/search")
 	{
-		search.GET("/auth-service", SearchAuthLogs(grpcClient))
-		search.GET("/order-service", SearchOrderLogs(grpcClient))
-		search.GET("/payment-service", SearchPaymentLogs(grpcClient))
+		search.POST("/auth-service", SearchAuthLogs(grpcClient))
+		search.POST("/order-service", SearchOrderLogs(grpcClient))
+		search.POST("/payment-service", SearchPaymentLogs(grpcClient))
 	}
 
 	engine.GET("/ws", func(c *gin.Context) {

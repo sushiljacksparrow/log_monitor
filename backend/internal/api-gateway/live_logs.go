@@ -17,6 +17,6 @@ func StartLiveLogConsumer(ctx context.Context, consumer *kafka.Consumer, hub *li
 		hub.Broadcast(msg.Value)
 		return nil
 	}); err != nil {
-		log.Printf("live-log consumer stopped: %v", err)
+		log.Printf("live-log consumer stopped: %v\n", err)
 	}
 }

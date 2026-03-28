@@ -11,6 +11,8 @@ import (
 	"google.golang.org/grpc"
 )
 
+//
+
 func main() {
 	config, err := config.InitConfig()
 	if err != nil {
@@ -20,20 +22,20 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// 1. open a TCP port
-	//
+	// 1. open a TCP portsssss
+	//s
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	// 2. create the gRPC server
+	// 2. create the gRPC server.
 	grpcServer := grpc.NewServer()
-
+	// sjssssss
 	// 3. plug your impl into the generated stub
 	pb.RegisterQueryServiceServer(grpcServer, queryservice.New(esClient, esTypedClient))
 
-	// 4. start serving
+	// 4. start servingss
 	log.Println("query-service gRPC server listening on :50051")
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

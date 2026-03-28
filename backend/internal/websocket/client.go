@@ -32,7 +32,7 @@ type Client struct {
 func ServeWS(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Printf("failed to upgrade connection: %v", err)
+		log.Printf("failed to upgrade connection: %v\n", err)
 		return
 	}
 

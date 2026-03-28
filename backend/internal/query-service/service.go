@@ -2,6 +2,7 @@ package queryservice
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 
 	es "github.com/elastic/go-elasticsearch/v9"
@@ -22,7 +23,8 @@ func New(esClient *es.Client, esTypedClient *es.TypedClient) *Service {
 }
 
 func (s *Service) AuthLogs(ctx context.Context, req *query.AuthLogsRequest) (*query.AuthLogsResponse, error) {
-	logs, err := s.repo.SearchAuthLogs(ctx, AuthLogFilters{
+	fmt.Printf("auth request %+v\n", req)
+	logs, page, err := s.repo.SearchAuthLogs(ctx, AuthLogFilters{
 		Service:        req.Service,
 		Level:          req.Level,
 		Message:        req.Message,
@@ -31,12 +33,14 @@ func (s *Service) AuthLogs(ctx context.Context, req *query.AuthLogsRequest) (*qu
 		IP:             req.Ip,
 		StartTimestamp: req.StartTimestamp,
 		EndTimestamp:   req.EndTimestamp,
-	})
+	}, req.SortedValue, req.Size)
 	if err != nil {
 		return nil, toStatusError("auth logs", err)
 	}
-
-	return &query.AuthLogsResponse{Logs: logs}, nil
+	fmt.Println("no error")
+	response := &query.AuthLogsResponse{Logs: logs, BaseResponse: page}
+	fmt.Printf("response from auhtlog: %+v\n", response)
+	return response, nil
 }
 
 func (s *Service) PaymentLogs(ctx context.Context, req *query.PaymentLogsRequest) (*query.PaymentLogsResponse, error) {
@@ -49,7 +53,7 @@ func (s *Service) PaymentLogs(ctx context.Context, req *query.PaymentLogsRequest
 		amount = &amountFloat
 	}
 
-	logs, err := s.repo.SearchPaymentLogs(ctx, PaymentLogFilters{
+	logs, page, err := s.repo.SearchPaymentLogs(ctx, PaymentLogFilters{
 		Service:        req.Service,
 		Level:          req.Level,
 		Message:        req.Message,
@@ -60,16 +64,16 @@ func (s *Service) PaymentLogs(ctx context.Context, req *query.PaymentLogsRequest
 		Amount:         amount,
 		StartTimestamp: req.StartTimestamp,
 		EndTimestamp:   req.EndTimestamp,
-	})
+	}, req.SortedValue, req.Size)
 	if err != nil {
 		return nil, toStatusError("payment logs", err)
 	}
 
-	return &query.PaymentLogsResponse{Logs: logs}, nil
+	return &query.PaymentLogsResponse{Logs: logs, BaseResponse: page}, nil
 }
 
 func (s *Service) OrderLogs(ctx context.Context, req *query.OrderLogsRequest) (*query.OrderLogsResponse, error) {
-	logs, err := s.repo.SearchOrderLogs(ctx, OrderLogFilters{
+	logs, page, err := s.repo.SearchOrderLogs(ctx, OrderLogFilters{
 		Service:        req.Service,
 		Level:          req.Level,
 		Message:        req.Message,
@@ -80,12 +84,12 @@ func (s *Service) OrderLogs(ctx context.Context, req *query.OrderLogsRequest) (*
 		ProductID:      req.ProductId,
 		StartTimestamp: req.StartTimestamp,
 		EndTimestamp:   req.EndTimestamp,
-	})
+	}, req.SortedValue, req.Size)
 	if err != nil {
 		return nil, toStatusError("order logs", err)
 	}
 
-	return &query.OrderLogsResponse{Logs: logs}, nil
+	return &query.OrderLogsResponse{Logs: logs, BaseResponse: page}, nil
 }
 
 func toStatusError(operation string, err error) error {

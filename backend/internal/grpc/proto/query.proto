@@ -22,6 +22,8 @@ message AuthLogsRequest {
   optional string ip = 6;
   optional google.protobuf.Timestamp start_timestamp = 7;
   optional google.protobuf.Timestamp end_timestamp = 8;
+  optional string sorted_value = 9;
+  int32 size = 10;
 }
 
 message OrderLogsRequest {
@@ -35,6 +37,8 @@ message OrderLogsRequest {
   optional string product_id = 8;
   optional google.protobuf.Timestamp start_timestamp = 9;
   optional google.protobuf.Timestamp end_timestamp = 10;
+  optional string sorted_value = 11;
+  int32 size = 12;
 }
 
 message PaymentLogsRequest {
@@ -48,6 +52,8 @@ message PaymentLogsRequest {
   optional string amount = 8;
   optional google.protobuf.Timestamp start_timestamp = 9;
   optional google.protobuf.Timestamp end_timestamp = 10;
+  optional string sorted_value = 11;
+  int32 size = 12;
 }
 
 // --- Response Messages ---
@@ -59,7 +65,7 @@ message AuthLogs {
   string request_id = 4;
   string user_id = 5;
   string ip = 6;
-  google.protobuf.Timestamp timestamp = 7;
+  string timestamp = 7;
 }
 
 message OrderLogs {
@@ -72,7 +78,7 @@ message OrderLogs {
   string carrier = 7;
   string product_id = 8;
   int32 stock_left = 9;
-  google.protobuf.Timestamp timestamp = 10;
+  string timestamp = 10;
 }
 
 message PaymentLogs {
@@ -84,19 +90,26 @@ message PaymentLogs {
   string payment_id = 6;
   string gateway = 7;
   string amount = 8;
-  google.protobuf.Timestamp timestamp = 9;
+  string timestamp = 9;
 }
 
+message Pagination {
+  bool has_more = 1;
+  string sorted_value = 2;
+}
 // --- Responses ---
 
 message AuthLogsResponse {
   repeated AuthLogs logs = 1;
+  Pagination base_response = 2;
 }
 
 message OrderLogsResponse {
   repeated OrderLogs logs = 1;
+  Pagination base_response = 2;
 }
 
 message PaymentLogsResponse {
   repeated PaymentLogs logs = 1;
+  Pagination base_response = 2;
 }

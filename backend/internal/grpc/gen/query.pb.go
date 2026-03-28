@@ -32,6 +32,8 @@ type AuthLogsRequest struct {
 	Ip             *string                `protobuf:"bytes,6,opt,name=ip,proto3,oneof" json:"ip,omitempty"`
 	StartTimestamp *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=start_timestamp,json=startTimestamp,proto3,oneof" json:"start_timestamp,omitempty"`
 	EndTimestamp   *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=end_timestamp,json=endTimestamp,proto3,oneof" json:"end_timestamp,omitempty"`
+	SortedValue    *string                `protobuf:"bytes,9,opt,name=sorted_value,json=sortedValue,proto3,oneof" json:"sorted_value,omitempty"`
+	Size           int32                  `protobuf:"varint,10,opt,name=size,proto3" json:"size,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -122,6 +124,20 @@ func (x *AuthLogsRequest) GetEndTimestamp() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *AuthLogsRequest) GetSortedValue() string {
+	if x != nil && x.SortedValue != nil {
+		return *x.SortedValue
+	}
+	return ""
+}
+
+func (x *AuthLogsRequest) GetSize() int32 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
+}
+
 type OrderLogsRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Service        *string                `protobuf:"bytes,1,opt,name=service,proto3,oneof" json:"service,omitempty"`
@@ -134,6 +150,8 @@ type OrderLogsRequest struct {
 	ProductId      *string                `protobuf:"bytes,8,opt,name=product_id,json=productId,proto3,oneof" json:"product_id,omitempty"`
 	StartTimestamp *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=start_timestamp,json=startTimestamp,proto3,oneof" json:"start_timestamp,omitempty"`
 	EndTimestamp   *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=end_timestamp,json=endTimestamp,proto3,oneof" json:"end_timestamp,omitempty"`
+	SortedValue    *string                `protobuf:"bytes,11,opt,name=sorted_value,json=sortedValue,proto3,oneof" json:"sorted_value,omitempty"`
+	Size           int32                  `protobuf:"varint,12,opt,name=size,proto3" json:"size,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -238,6 +256,20 @@ func (x *OrderLogsRequest) GetEndTimestamp() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *OrderLogsRequest) GetSortedValue() string {
+	if x != nil && x.SortedValue != nil {
+		return *x.SortedValue
+	}
+	return ""
+}
+
+func (x *OrderLogsRequest) GetSize() int32 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
+}
+
 type PaymentLogsRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Service        *string                `protobuf:"bytes,1,opt,name=service,proto3,oneof" json:"service,omitempty"`
@@ -250,6 +282,8 @@ type PaymentLogsRequest struct {
 	Amount         *string                `protobuf:"bytes,8,opt,name=amount,proto3,oneof" json:"amount,omitempty"`
 	StartTimestamp *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=start_timestamp,json=startTimestamp,proto3,oneof" json:"start_timestamp,omitempty"`
 	EndTimestamp   *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=end_timestamp,json=endTimestamp,proto3,oneof" json:"end_timestamp,omitempty"`
+	SortedValue    *string                `protobuf:"bytes,11,opt,name=sorted_value,json=sortedValue,proto3,oneof" json:"sorted_value,omitempty"`
+	Size           int32                  `protobuf:"varint,12,opt,name=size,proto3" json:"size,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -354,6 +388,20 @@ func (x *PaymentLogsRequest) GetEndTimestamp() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *PaymentLogsRequest) GetSortedValue() string {
+	if x != nil && x.SortedValue != nil {
+		return *x.SortedValue
+	}
+	return ""
+}
+
+func (x *PaymentLogsRequest) GetSize() int32 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
+}
+
 type AuthLogs struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Service       string                 `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
@@ -362,7 +410,7 @@ type AuthLogs struct {
 	RequestId     string                 `protobuf:"bytes,4,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	UserId        string                 `protobuf:"bytes,5,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Ip            string                 `protobuf:"bytes,6,opt,name=ip,proto3" json:"ip,omitempty"`
-	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Timestamp     string                 `protobuf:"bytes,7,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -439,11 +487,11 @@ func (x *AuthLogs) GetIp() string {
 	return ""
 }
 
-func (x *AuthLogs) GetTimestamp() *timestamppb.Timestamp {
+func (x *AuthLogs) GetTimestamp() string {
 	if x != nil {
 		return x.Timestamp
 	}
-	return nil
+	return ""
 }
 
 type OrderLogs struct {
@@ -457,7 +505,7 @@ type OrderLogs struct {
 	Carrier       string                 `protobuf:"bytes,7,opt,name=carrier,proto3" json:"carrier,omitempty"`
 	ProductId     string                 `protobuf:"bytes,8,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
 	StockLeft     int32                  `protobuf:"varint,9,opt,name=stock_left,json=stockLeft,proto3" json:"stock_left,omitempty"`
-	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Timestamp     string                 `protobuf:"bytes,10,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -555,11 +603,11 @@ func (x *OrderLogs) GetStockLeft() int32 {
 	return 0
 }
 
-func (x *OrderLogs) GetTimestamp() *timestamppb.Timestamp {
+func (x *OrderLogs) GetTimestamp() string {
 	if x != nil {
 		return x.Timestamp
 	}
-	return nil
+	return ""
 }
 
 type PaymentLogs struct {
@@ -572,7 +620,7 @@ type PaymentLogs struct {
 	PaymentId     string                 `protobuf:"bytes,6,opt,name=payment_id,json=paymentId,proto3" json:"payment_id,omitempty"`
 	Gateway       string                 `protobuf:"bytes,7,opt,name=gateway,proto3" json:"gateway,omitempty"`
 	Amount        string                 `protobuf:"bytes,8,opt,name=amount,proto3" json:"amount,omitempty"`
-	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Timestamp     string                 `protobuf:"bytes,9,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -663,23 +711,76 @@ func (x *PaymentLogs) GetAmount() string {
 	return ""
 }
 
-func (x *PaymentLogs) GetTimestamp() *timestamppb.Timestamp {
+func (x *PaymentLogs) GetTimestamp() string {
 	if x != nil {
 		return x.Timestamp
 	}
-	return nil
+	return ""
+}
+
+type Pagination struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	HasMore       bool                   `protobuf:"varint,1,opt,name=has_more,json=hasMore,proto3" json:"has_more,omitempty"`
+	SortedValue   string                 `protobuf:"bytes,2,opt,name=sorted_value,json=sortedValue,proto3" json:"sorted_value,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Pagination) Reset() {
+	*x = Pagination{}
+	mi := &file_query_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Pagination) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Pagination) ProtoMessage() {}
+
+func (x *Pagination) ProtoReflect() protoreflect.Message {
+	mi := &file_query_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Pagination.ProtoReflect.Descriptor instead.
+func (*Pagination) Descriptor() ([]byte, []int) {
+	return file_query_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *Pagination) GetHasMore() bool {
+	if x != nil {
+		return x.HasMore
+	}
+	return false
+}
+
+func (x *Pagination) GetSortedValue() string {
+	if x != nil {
+		return x.SortedValue
+	}
+	return ""
 }
 
 type AuthLogsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Logs          []*AuthLogs            `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
+	BaseResponse  *Pagination            `protobuf:"bytes,2,opt,name=base_response,json=baseResponse,proto3" json:"base_response,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AuthLogsResponse) Reset() {
 	*x = AuthLogsResponse{}
-	mi := &file_query_proto_msgTypes[6]
+	mi := &file_query_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -691,7 +792,7 @@ func (x *AuthLogsResponse) String() string {
 func (*AuthLogsResponse) ProtoMessage() {}
 
 func (x *AuthLogsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_proto_msgTypes[6]
+	mi := &file_query_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -704,7 +805,7 @@ func (x *AuthLogsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthLogsResponse.ProtoReflect.Descriptor instead.
 func (*AuthLogsResponse) Descriptor() ([]byte, []int) {
-	return file_query_proto_rawDescGZIP(), []int{6}
+	return file_query_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *AuthLogsResponse) GetLogs() []*AuthLogs {
@@ -714,16 +815,24 @@ func (x *AuthLogsResponse) GetLogs() []*AuthLogs {
 	return nil
 }
 
+func (x *AuthLogsResponse) GetBaseResponse() *Pagination {
+	if x != nil {
+		return x.BaseResponse
+	}
+	return nil
+}
+
 type OrderLogsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Logs          []*OrderLogs           `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
+	BaseResponse  *Pagination            `protobuf:"bytes,2,opt,name=base_response,json=baseResponse,proto3" json:"base_response,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *OrderLogsResponse) Reset() {
 	*x = OrderLogsResponse{}
-	mi := &file_query_proto_msgTypes[7]
+	mi := &file_query_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -735,7 +844,7 @@ func (x *OrderLogsResponse) String() string {
 func (*OrderLogsResponse) ProtoMessage() {}
 
 func (x *OrderLogsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_proto_msgTypes[7]
+	mi := &file_query_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -748,7 +857,7 @@ func (x *OrderLogsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrderLogsResponse.ProtoReflect.Descriptor instead.
 func (*OrderLogsResponse) Descriptor() ([]byte, []int) {
-	return file_query_proto_rawDescGZIP(), []int{7}
+	return file_query_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *OrderLogsResponse) GetLogs() []*OrderLogs {
@@ -758,16 +867,24 @@ func (x *OrderLogsResponse) GetLogs() []*OrderLogs {
 	return nil
 }
 
+func (x *OrderLogsResponse) GetBaseResponse() *Pagination {
+	if x != nil {
+		return x.BaseResponse
+	}
+	return nil
+}
+
 type PaymentLogsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Logs          []*PaymentLogs         `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
+	BaseResponse  *Pagination            `protobuf:"bytes,2,opt,name=base_response,json=baseResponse,proto3" json:"base_response,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PaymentLogsResponse) Reset() {
 	*x = PaymentLogsResponse{}
-	mi := &file_query_proto_msgTypes[8]
+	mi := &file_query_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -779,7 +896,7 @@ func (x *PaymentLogsResponse) String() string {
 func (*PaymentLogsResponse) ProtoMessage() {}
 
 func (x *PaymentLogsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_proto_msgTypes[8]
+	mi := &file_query_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -792,7 +909,7 @@ func (x *PaymentLogsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PaymentLogsResponse.ProtoReflect.Descriptor instead.
 func (*PaymentLogsResponse) Descriptor() ([]byte, []int) {
-	return file_query_proto_rawDescGZIP(), []int{8}
+	return file_query_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *PaymentLogsResponse) GetLogs() []*PaymentLogs {
@@ -802,11 +919,18 @@ func (x *PaymentLogsResponse) GetLogs() []*PaymentLogs {
 	return nil
 }
 
+func (x *PaymentLogsResponse) GetBaseResponse() *Pagination {
+	if x != nil {
+		return x.BaseResponse
+	}
+	return nil
+}
+
 var File_query_proto protoreflect.FileDescriptor
 
 const file_query_proto_rawDesc = "" +
 	"\n" +
-	"\vquery.proto\x12\x05query\x1a\x1fgoogle/protobuf/timestamp.proto\"\xbb\x03\n" +
+	"\vquery.proto\x12\x05query\x1a\x1fgoogle/protobuf/timestamp.proto\"\x88\x04\n" +
 	"\x0fAuthLogsRequest\x12\x1d\n" +
 	"\aservice\x18\x01 \x01(\tH\x00R\aservice\x88\x01\x01\x12\x19\n" +
 	"\x05level\x18\x02 \x01(\tH\x01R\x05level\x88\x01\x01\x12\x1d\n" +
@@ -816,7 +940,10 @@ const file_query_proto_rawDesc = "" +
 	"\auser_id\x18\x05 \x01(\tH\x04R\x06userId\x88\x01\x01\x12\x13\n" +
 	"\x02ip\x18\x06 \x01(\tH\x05R\x02ip\x88\x01\x01\x12H\n" +
 	"\x0fstart_timestamp\x18\a \x01(\v2\x1a.google.protobuf.TimestampH\x06R\x0estartTimestamp\x88\x01\x01\x12D\n" +
-	"\rend_timestamp\x18\b \x01(\v2\x1a.google.protobuf.TimestampH\aR\fendTimestamp\x88\x01\x01B\n" +
+	"\rend_timestamp\x18\b \x01(\v2\x1a.google.protobuf.TimestampH\aR\fendTimestamp\x88\x01\x01\x12&\n" +
+	"\fsorted_value\x18\t \x01(\tH\bR\vsortedValue\x88\x01\x01\x12\x12\n" +
+	"\x04size\x18\n" +
+	" \x01(\x05R\x04sizeB\n" +
 	"\n" +
 	"\b_serviceB\b\n" +
 	"\x06_levelB\n" +
@@ -827,7 +954,8 @@ const file_query_proto_rawDesc = "" +
 	"\b_user_idB\x05\n" +
 	"\x03_ipB\x12\n" +
 	"\x10_start_timestampB\x10\n" +
-	"\x0e_end_timestamp\"\xab\x04\n" +
+	"\x0e_end_timestampB\x0f\n" +
+	"\r_sorted_value\"\xf8\x04\n" +
 	"\x10OrderLogsRequest\x12\x1d\n" +
 	"\aservice\x18\x01 \x01(\tH\x00R\aservice\x88\x01\x01\x12\x19\n" +
 	"\x05level\x18\x02 \x01(\tH\x01R\x05level\x88\x01\x01\x12\x1d\n" +
@@ -841,7 +969,10 @@ const file_query_proto_rawDesc = "" +
 	"product_id\x18\b \x01(\tH\aR\tproductId\x88\x01\x01\x12H\n" +
 	"\x0fstart_timestamp\x18\t \x01(\v2\x1a.google.protobuf.TimestampH\bR\x0estartTimestamp\x88\x01\x01\x12D\n" +
 	"\rend_timestamp\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampH\tR\fendTimestamp\x88\x01\x01B\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampH\tR\fendTimestamp\x88\x01\x01\x12&\n" +
+	"\fsorted_value\x18\v \x01(\tH\n" +
+	"R\vsortedValue\x88\x01\x01\x12\x12\n" +
+	"\x04size\x18\f \x01(\x05R\x04sizeB\n" +
 	"\n" +
 	"\b_serviceB\b\n" +
 	"\x06_levelB\n" +
@@ -855,7 +986,8 @@ const file_query_proto_rawDesc = "" +
 	"\b_carrierB\r\n" +
 	"\v_product_idB\x12\n" +
 	"\x10_start_timestampB\x10\n" +
-	"\x0e_end_timestamp\"\xab\x04\n" +
+	"\x0e_end_timestampB\x0f\n" +
+	"\r_sorted_value\"\xf8\x04\n" +
 	"\x12PaymentLogsRequest\x12\x1d\n" +
 	"\aservice\x18\x01 \x01(\tH\x00R\aservice\x88\x01\x01\x12\x19\n" +
 	"\x05level\x18\x02 \x01(\tH\x01R\x05level\x88\x01\x01\x12\x1d\n" +
@@ -869,7 +1001,10 @@ const file_query_proto_rawDesc = "" +
 	"\x06amount\x18\b \x01(\tH\aR\x06amount\x88\x01\x01\x12H\n" +
 	"\x0fstart_timestamp\x18\t \x01(\v2\x1a.google.protobuf.TimestampH\bR\x0estartTimestamp\x88\x01\x01\x12D\n" +
 	"\rend_timestamp\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampH\tR\fendTimestamp\x88\x01\x01B\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampH\tR\fendTimestamp\x88\x01\x01\x12&\n" +
+	"\fsorted_value\x18\v \x01(\tH\n" +
+	"R\vsortedValue\x88\x01\x01\x12\x12\n" +
+	"\x04size\x18\f \x01(\x05R\x04sizeB\n" +
 	"\n" +
 	"\b_serviceB\b\n" +
 	"\x06_levelB\n" +
@@ -882,7 +1017,8 @@ const file_query_proto_rawDesc = "" +
 	"\b_gatewayB\t\n" +
 	"\a_amountB\x12\n" +
 	"\x10_start_timestampB\x10\n" +
-	"\x0e_end_timestamp\"\xd6\x01\n" +
+	"\x0e_end_timestampB\x0f\n" +
+	"\r_sorted_value\"\xba\x01\n" +
 	"\bAuthLogs\x12\x18\n" +
 	"\aservice\x18\x01 \x01(\tR\aservice\x12\x14\n" +
 	"\x05level\x18\x02 \x01(\tR\x05level\x12\x18\n" +
@@ -890,8 +1026,8 @@ const file_query_proto_rawDesc = "" +
 	"\n" +
 	"request_id\x18\x04 \x01(\tR\trequestId\x12\x17\n" +
 	"\auser_id\x18\x05 \x01(\tR\x06userId\x12\x0e\n" +
-	"\x02ip\x18\x06 \x01(\tR\x02ip\x128\n" +
-	"\ttimestamp\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\"\xba\x02\n" +
+	"\x02ip\x18\x06 \x01(\tR\x02ip\x12\x1c\n" +
+	"\ttimestamp\x18\a \x01(\tR\ttimestamp\"\x9e\x02\n" +
 	"\tOrderLogs\x12\x18\n" +
 	"\aservice\x18\x01 \x01(\tR\aservice\x12\x14\n" +
 	"\x05level\x18\x02 \x01(\tR\x05level\x12\x18\n" +
@@ -904,9 +1040,9 @@ const file_query_proto_rawDesc = "" +
 	"\n" +
 	"product_id\x18\b \x01(\tR\tproductId\x12\x1d\n" +
 	"\n" +
-	"stock_left\x18\t \x01(\x05R\tstockLeft\x128\n" +
+	"stock_left\x18\t \x01(\x05R\tstockLeft\x12\x1c\n" +
 	"\ttimestamp\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\"\x9c\x02\n" +
+	" \x01(\tR\ttimestamp\"\x80\x02\n" +
 	"\vPaymentLogs\x12\x18\n" +
 	"\aservice\x18\x01 \x01(\tR\aservice\x12\x14\n" +
 	"\x05level\x18\x02 \x01(\tR\x05level\x12\x18\n" +
@@ -917,14 +1053,21 @@ const file_query_proto_rawDesc = "" +
 	"\n" +
 	"payment_id\x18\x06 \x01(\tR\tpaymentId\x12\x18\n" +
 	"\agateway\x18\a \x01(\tR\agateway\x12\x16\n" +
-	"\x06amount\x18\b \x01(\tR\x06amount\x128\n" +
-	"\ttimestamp\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\"7\n" +
+	"\x06amount\x18\b \x01(\tR\x06amount\x12\x1c\n" +
+	"\ttimestamp\x18\t \x01(\tR\ttimestamp\"J\n" +
+	"\n" +
+	"Pagination\x12\x19\n" +
+	"\bhas_more\x18\x01 \x01(\bR\ahasMore\x12!\n" +
+	"\fsorted_value\x18\x02 \x01(\tR\vsortedValue\"o\n" +
 	"\x10AuthLogsResponse\x12#\n" +
-	"\x04logs\x18\x01 \x03(\v2\x0f.query.AuthLogsR\x04logs\"9\n" +
+	"\x04logs\x18\x01 \x03(\v2\x0f.query.AuthLogsR\x04logs\x126\n" +
+	"\rbase_response\x18\x02 \x01(\v2\x11.query.PaginationR\fbaseResponse\"q\n" +
 	"\x11OrderLogsResponse\x12$\n" +
-	"\x04logs\x18\x01 \x03(\v2\x10.query.OrderLogsR\x04logs\"=\n" +
+	"\x04logs\x18\x01 \x03(\v2\x10.query.OrderLogsR\x04logs\x126\n" +
+	"\rbase_response\x18\x02 \x01(\v2\x11.query.PaginationR\fbaseResponse\"u\n" +
 	"\x13PaymentLogsResponse\x12&\n" +
-	"\x04logs\x18\x01 \x03(\v2\x12.query.PaymentLogsR\x04logs2\xd1\x01\n" +
+	"\x04logs\x18\x01 \x03(\v2\x12.query.PaymentLogsR\x04logs\x126\n" +
+	"\rbase_response\x18\x02 \x01(\v2\x11.query.PaginationR\fbaseResponse2\xd1\x01\n" +
 	"\fQueryService\x12;\n" +
 	"\bAuthLogs\x12\x16.query.AuthLogsRequest\x1a\x17.query.AuthLogsResponse\x12D\n" +
 	"\vPaymentLogs\x12\x19.query.PaymentLogsRequest\x1a\x1a.query.PaymentLogsResponse\x12>\n" +
@@ -942,7 +1085,7 @@ func file_query_proto_rawDescGZIP() []byte {
 	return file_query_proto_rawDescData
 }
 
-var file_query_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_query_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_query_proto_goTypes = []any{
 	(*AuthLogsRequest)(nil),       // 0: query.AuthLogsRequest
 	(*OrderLogsRequest)(nil),      // 1: query.OrderLogsRequest
@@ -950,30 +1093,31 @@ var file_query_proto_goTypes = []any{
 	(*AuthLogs)(nil),              // 3: query.AuthLogs
 	(*OrderLogs)(nil),             // 4: query.OrderLogs
 	(*PaymentLogs)(nil),           // 5: query.PaymentLogs
-	(*AuthLogsResponse)(nil),      // 6: query.AuthLogsResponse
-	(*OrderLogsResponse)(nil),     // 7: query.OrderLogsResponse
-	(*PaymentLogsResponse)(nil),   // 8: query.PaymentLogsResponse
-	(*timestamppb.Timestamp)(nil), // 9: google.protobuf.Timestamp
+	(*Pagination)(nil),            // 6: query.Pagination
+	(*AuthLogsResponse)(nil),      // 7: query.AuthLogsResponse
+	(*OrderLogsResponse)(nil),     // 8: query.OrderLogsResponse
+	(*PaymentLogsResponse)(nil),   // 9: query.PaymentLogsResponse
+	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
 }
 var file_query_proto_depIdxs = []int32{
-	9,  // 0: query.AuthLogsRequest.start_timestamp:type_name -> google.protobuf.Timestamp
-	9,  // 1: query.AuthLogsRequest.end_timestamp:type_name -> google.protobuf.Timestamp
-	9,  // 2: query.OrderLogsRequest.start_timestamp:type_name -> google.protobuf.Timestamp
-	9,  // 3: query.OrderLogsRequest.end_timestamp:type_name -> google.protobuf.Timestamp
-	9,  // 4: query.PaymentLogsRequest.start_timestamp:type_name -> google.protobuf.Timestamp
-	9,  // 5: query.PaymentLogsRequest.end_timestamp:type_name -> google.protobuf.Timestamp
-	9,  // 6: query.AuthLogs.timestamp:type_name -> google.protobuf.Timestamp
-	9,  // 7: query.OrderLogs.timestamp:type_name -> google.protobuf.Timestamp
-	9,  // 8: query.PaymentLogs.timestamp:type_name -> google.protobuf.Timestamp
-	3,  // 9: query.AuthLogsResponse.logs:type_name -> query.AuthLogs
-	4,  // 10: query.OrderLogsResponse.logs:type_name -> query.OrderLogs
-	5,  // 11: query.PaymentLogsResponse.logs:type_name -> query.PaymentLogs
+	10, // 0: query.AuthLogsRequest.start_timestamp:type_name -> google.protobuf.Timestamp
+	10, // 1: query.AuthLogsRequest.end_timestamp:type_name -> google.protobuf.Timestamp
+	10, // 2: query.OrderLogsRequest.start_timestamp:type_name -> google.protobuf.Timestamp
+	10, // 3: query.OrderLogsRequest.end_timestamp:type_name -> google.protobuf.Timestamp
+	10, // 4: query.PaymentLogsRequest.start_timestamp:type_name -> google.protobuf.Timestamp
+	10, // 5: query.PaymentLogsRequest.end_timestamp:type_name -> google.protobuf.Timestamp
+	3,  // 6: query.AuthLogsResponse.logs:type_name -> query.AuthLogs
+	6,  // 7: query.AuthLogsResponse.base_response:type_name -> query.Pagination
+	4,  // 8: query.OrderLogsResponse.logs:type_name -> query.OrderLogs
+	6,  // 9: query.OrderLogsResponse.base_response:type_name -> query.Pagination
+	5,  // 10: query.PaymentLogsResponse.logs:type_name -> query.PaymentLogs
+	6,  // 11: query.PaymentLogsResponse.base_response:type_name -> query.Pagination
 	0,  // 12: query.QueryService.AuthLogs:input_type -> query.AuthLogsRequest
 	2,  // 13: query.QueryService.PaymentLogs:input_type -> query.PaymentLogsRequest
 	1,  // 14: query.QueryService.OrderLogs:input_type -> query.OrderLogsRequest
-	6,  // 15: query.QueryService.AuthLogs:output_type -> query.AuthLogsResponse
-	8,  // 16: query.QueryService.PaymentLogs:output_type -> query.PaymentLogsResponse
-	7,  // 17: query.QueryService.OrderLogs:output_type -> query.OrderLogsResponse
+	7,  // 15: query.QueryService.AuthLogs:output_type -> query.AuthLogsResponse
+	9,  // 16: query.QueryService.PaymentLogs:output_type -> query.PaymentLogsResponse
+	8,  // 17: query.QueryService.OrderLogs:output_type -> query.OrderLogsResponse
 	15, // [15:18] is the sub-list for method output_type
 	12, // [12:15] is the sub-list for method input_type
 	12, // [12:12] is the sub-list for extension type_name
@@ -995,7 +1139,7 @@ func file_query_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_query_proto_rawDesc), len(file_query_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

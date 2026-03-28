@@ -37,7 +37,7 @@ func main() {
 		}
 		bulkIndexer, err := logprocessor.InitBulkIndexer(esClient, k)
 		if err != nil {
-			log.Printf("couldnt build bulk indexer for %s: %v", k, err)
+			log.Printf("couldnt build bulk indexer for %s: %v\n", k, err)
 		}
 		esBgCtx := context.Background()
 		defer bulkIndexer.Close(esBgCtx)
@@ -54,12 +54,12 @@ func main() {
 	}
 	producer, err := kafka.NewProducer(config.KafkaBrokers)
 	if err != nil {
-		log.Printf("error while init new producer:%v ", err)
+		log.Printf("error while init new producer:%v\n", err)
 	}
 	defer producer.Close()
 	consumer, err := kafka.NewConsumer(config.KafkaBrokers, config.KafkaTopicLogGroupID)
 	if err != nil {
-		log.Printf("error while initalizing a consumer with group ID: %s - %v ", config.KafkaTopicLogGroupID, err)
+		log.Printf("error while initalizing a consumer with group ID: %s - %v\n", config.KafkaTopicLogGroupID, err)
 	}
 	fmt.Println("Consumption starting")
 

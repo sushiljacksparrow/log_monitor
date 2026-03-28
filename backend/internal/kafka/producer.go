@@ -21,7 +21,7 @@ func NewProducer(brokers []string) (*Producer, error) {
 	// handle success
 	go func() {
 		for success := range producer.Successes() {
-			log.Printf("Message sent to partition=%d offset=%d",
+			log.Printf("Message sent to partition=%d offset=%d\n",
 				success.Partition, success.Offset)
 		}
 	}()

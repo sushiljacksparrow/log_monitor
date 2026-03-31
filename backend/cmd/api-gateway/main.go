@@ -25,7 +25,7 @@ func main() {
 	hub := livews.NewHub()
 	go hub.Run()
 
-	consumer, err := kafka.NewConsumer(envs.KafkaBrokers, "logs-live-1")
+	consumer, err := kafka.NewConsumer(envs.KafkaBrokers, "logs-live-1", kafka.NewLiveConsumerConfig)
 	if err != nil {
 		log.Printf("could not initialize live-log consumer: %v\n", err)
 	} else {

@@ -2,7 +2,19 @@ package kafka
 
 import "github.com/IBM/sarama"
 
-func NewConfig() *sarama.Config {
+func NewProducerConfig() *sarama.Config {
+	config := sarama.NewConfig()
+
+	config.Version = sarama.V2_8_0_0
+	config.Producer.Return.Successes = true
+	config.Producer.Return.Errors = true
+	config.Producer.RequiredAcks = sarama.WaitForAll
+	config.Producer.Retry.Max = 5
+
+	return config
+}
+
+func NewDurableConsumerConfig() *sarama.Config {
 	config := sarama.NewConfig()
 
 	config.Version = sarama.V2_8_0_0
@@ -14,6 +26,18 @@ func NewConfig() *sarama.Config {
 	}
 	config.Consumer.Offsets.Initial = sarama.OffsetOldest
 	config.Consumer.Offsets.AutoCommit.Enable = false
+
+	return config
+}
+
+func NewLiveConsumerConfig() *sarama.Config {
+	config := sarama.NewConfig()
+
+	config.Version = sarama.V2_8_0_0
+	config.Producer.Return.Successes = true
+	config.Producer.Return.Errors = true
+	config.Producer.RequiredAcks = sarama.WaitForAll
+	config.Producer.Retry.Max = 5
 
 	return config
 }

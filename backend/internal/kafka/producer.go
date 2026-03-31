@@ -11,7 +11,7 @@ type Producer struct {
 }
 
 func NewProducer(brokers []string) (*Producer, error) {
-	producer, err := sarama.NewAsyncProducer(brokers, NewConfig())
+	producer, err := sarama.NewAsyncProducer(brokers, NewProducerConfig())
 	if err != nil {
 		return nil, err
 	}

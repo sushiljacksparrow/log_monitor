@@ -1,5 +1,15 @@
 services:
 
+  frontend:
+    build:
+      context: ./frontend      # path to your frontend folder
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api-gateway
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     container_name: zookeeper
@@ -46,64 +56,94 @@ services:
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
 
   grafana:
-          image: grafana/grafana
-          container_name: grafana
-          restart: unless-stopped
-          ports:
-            - '3000:3000'
-          volumes:
-            - grafana_data:/usr/share/grafana/data
-  # auth-service:
-  #   env_file:
-  #     - ./backend/.env
-  #   build:
-  #     context: ./backend
-  #     dockerfile: cmd/auth-service/Dockerfile
-  #   volumes:
-  #     - ./backend:/app
-  #   working_dir: /app
-  #   command: air -c cmd/auth-service/.air.toml
-  #   depends_on:
-  #     - kafka
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/usr/share/grafana/data
 
-  # payment-service:
-  #   env_file:
-  #     - ./backend/.env
-  #   build:
-  #     context: ./backend
-  #     dockerfile: cmd/payment-service/Dockerfile
-  #   volumes:
-  #     - ./backend:/app
-  #   working_dir: /app
-  #   command: air -c cmd/payment-service/.air.toml
-  #   depends_on:
-  #     - kafka
+  auth-service:
+    env_file:
+      - ./backend/.env
+    build:
+      context: ./backend
+      dockerfile: cmd/auth-service/Dockerfile
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      ELASTIC_SEARCH_HOST: http://elasticsearch:9200
+    depends_on:
+      - kafka
 
-  # query-service:
-  #   env_file:
-  #     - ./backend/.env
-  #   build:
-  #     context: ./backend
-  #     dockerfile: cmd/query-service/Dockerfile
-  #   volumes:
-  #     - ./backend:/app
-  #   working_dir: /app
-  #   command: air -c cmd/query-service/.air.toml
-  #   depends_on:
-  #     - kafka
+  order-service:
+    env_file:
+      - ./backend/.env
+    build:
+      context: ./backend
+      dockerfile: cmd/order-service/Dockerfile
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      ELASTIC_SEARCH_HOST: http://elasticsearch:9200
+    depends_on:
+      - kafka
 
-  # log-processor:
-  #   env_file:
-  #     - ./backend/.env
-  #   build:
-  #     context: ./backend
-  #     dockerfile: cmd/log-processor/Dockerfile
-  #   volumes:
-  #     - ./backend:/app
-  #   working_dir: /app
-  #   command: air -c cmd/log-processor/.air.toml
-  #   depends_on:
-  #     - kafka
+  payment-service:
+    env_file:
+      - ./backend/.env
+    build:
+      context: ./backend
+      dockerfile: cmd/payment-service/Dockerfile
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      ELASTIC_SEARCH_HOST: http://elasticsearch:9200
+    depends_on:
+      - kafka
+
+  query-service:
+    env_file:
+      - ./backend/.env
+    build:
+      context: ./backend
+      dockerfile: cmd/query-service/Dockerfile
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      ELASTIC_SEARCH_HOST: http://elasticsearch:9200
+    ports:
+      - "50051:50051"
+    depends_on:
+      - kafka
+      - elasticsearch
+
+  log-processor:
+    env_file:
+      - ./backend/.env
+    build:
+      context: ./backend
+      dockerfile: cmd/log-processor/Dockerfile
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      ELASTIC_SEARCH_HOST: http://elasticsearch:9200
+    depends_on:
+      - kafka
+      - elasticsearch
+
+  api-gateway:
+    env_file:
+      - ./backend/.env
+    build:
+      context: ./backend
+      dockerfile: cmd/api-gateway/Dockerfile
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      ELASTIC_SEARCH_HOST: http://elasticsearch:9200
+      QUERY_SERVICE_ADDR: query-service:50051
+    ports:
+      - "8000:8000"
+    depends_on:
+      - kafka
+      - query-service
+
 
 volumes:
   elasticsearch_data:

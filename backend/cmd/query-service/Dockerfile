@@ -3,7 +3,8 @@
 FROM golang:1.25-alpine AS builder
 WORKDIR /app
 
-RUN go install github.com/air-verse/air@latest 
+ENV CGO_ENABLED=0
+ENV GOFLAGS=-buildvcs=false
 
 COPY go.mod go.sum ./
 RUN go mod download
@@ -11,7 +12,7 @@ RUN go mod download
 COPY cmd/ ./cmd/
 COPY internal/ ./internal/
 
-RUN go build -o query-service ./cmd/query-service/
+RUN go build -v -o query-service ./cmd/query-service/
 
 
 # FINAL STAGE

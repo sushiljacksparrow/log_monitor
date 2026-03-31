@@ -41,7 +41,7 @@ const PaymentServiceLogMapping = `{
       "payment_id": { "type": "keyword" },
       "gateway":    { "type": "keyword" },
       "order_id":   { "type": "keyword" },
-      "amount":     { "type": "scaled_float,"scaling_factor":100 },
+      "amount":     { "type": "scaled_float", "scaling_factor": 100 },
       "timestamp":  { "type": "date" }
     }
   }

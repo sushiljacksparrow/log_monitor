@@ -48,7 +48,7 @@ type PaymentLogRequest struct {
 	OrderId        *string    `json:"order_id"`
 	PaymentId      *string    `json:"payment_id"`
 	Gateway        *string    `json:"gateway"`
-	Amount         *string    `json:"amount"`
+	Amount         *float32   `json:"amount"`
 	SortedValue    *string    `json:"sorted_value"`
 	StartTimestamp *time.Time `json:"start_timestamp"`
 	EndTimestamp   *time.Time `json:"end_timestamp"`
@@ -108,11 +108,6 @@ func SearchAuthLogs(grpcClient *GRPCClient) gin.HandlerFunc {
 			return
 		}
 
-		// if len(resp.Logs) == 0 {
-
-		// 	c.JSON(http.StatusNotFound, "no logs found")
-		// 	return
-		// }
 		helper.SendResponse(c, http.StatusOK, "data retrieved successfully", resp)
 	}
 }

@@ -68,15 +68,15 @@ func ConsumeKafka(msg *sarama.ConsumerMessage, bulkIndexers *BulkIndexers, produ
 
 	switch msg.Topic {
 	case constants.AUTH_SERVICE_LOGS_TOPIC:
-		if err := AddIndex(ctx, bulkIndexers.AuthBulkIndexer, constants.AUTH_SERVICE_LOGS_INDEX, stringifiedMessage, &retryMap, producer); err != nil {
+		if err := AddIndex(ctx, bulkIndexers.AuthBulkIndexer, constants.AUTH_SERVICE_LOGS_INDEX, stringifiedMessage, &retryMap, producer,msg); err != nil {
 			return err
 		}
 	case constants.ORDER_SERVICE_LOGS_TOPIC:
-		if err := AddIndex(ctx, bulkIndexers.OrderBulkIndexer, constants.ORDER_SERVICE_LOGS_INDEX, stringifiedMessage, &retryMap, producer); err != nil {
+		if err := AddIndex(ctx, bulkIndexers.OrderBulkIndexer, constants.ORDER_SERVICE_LOGS_INDEX, stringifiedMessage, &retryMap, producer,msg); err != nil {
 			return err
 		}
 	case constants.PAYMENT_SERVICE_LOGS_TOPIC:
-		if err := AddIndex(ctx, bulkIndexers.PaymentBulkIndexer, constants.PAYMENT_SERVICE_LOGS_INDEX, stringifiedMessage, &retryMap, producer); err != nil {
+		if err := AddIndex(ctx, bulkIndexers.PaymentBulkIndexer, constants.PAYMENT_SERVICE_LOGS_INDEX, stringifiedMessage, &retryMap, producer,msg); err != nil {
 			return err
 		}
 	default:

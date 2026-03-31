@@ -31,7 +31,7 @@ func main() {
 
 	// 2. create the gRPC server.
 	grpcServer := grpc.NewServer()
-	// sjssssss
+
 	// 3. plug your impl into the generated stub
 	pb.RegisterQueryServiceServer(grpcServer, queryservice.New(esClient, esTypedClient))
 

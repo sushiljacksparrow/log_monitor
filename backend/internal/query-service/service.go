@@ -3,7 +3,6 @@ package queryservice
 import (
 	"context"
 	"fmt"
-	"strconv"
 
 	es "github.com/elastic/go-elasticsearch/v9"
 	query "github.com/mahirjain10/logflow/backend/internal/grpc/gen"
@@ -44,15 +43,6 @@ func (s *Service) AuthLogs(ctx context.Context, req *query.AuthLogsRequest) (*qu
 }
 
 func (s *Service) PaymentLogs(ctx context.Context, req *query.PaymentLogsRequest) (*query.PaymentLogsResponse, error) {
-	var amount *float64
-	if req.Amount != nil && *req.Amount != "" {
-		amountFloat, err := strconv.ParseFloat(*req.Amount, 64)
-		if err != nil {
-			return nil, status.Errorf(codes.InvalidArgument, "invalid amount: %v", err)
-		}
-		amount = &amountFloat
-	}
-
 	logs, page, err := s.repo.SearchPaymentLogs(ctx, PaymentLogFilters{
 		Service:        req.Service,
 		Level:          req.Level,
@@ -61,7 +51,7 @@ func (s *Service) PaymentLogs(ctx context.Context, req *query.PaymentLogsRequest
 		OrderID:        req.OrderId,
 		PaymentID:      req.PaymentId,
 		Gateway:        req.Gateway,
-		Amount:         amount,
+		Amount:         req.Amount,
 		StartTimestamp: req.StartTimestamp,
 		EndTimestamp:   req.EndTimestamp,
 	}, req.SortedValue, req.Size)

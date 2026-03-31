@@ -279,7 +279,7 @@ type PaymentLogsRequest struct {
 	OrderId        *string                `protobuf:"bytes,5,opt,name=order_id,json=orderId,proto3,oneof" json:"order_id,omitempty"`
 	PaymentId      *string                `protobuf:"bytes,6,opt,name=payment_id,json=paymentId,proto3,oneof" json:"payment_id,omitempty"`
 	Gateway        *string                `protobuf:"bytes,7,opt,name=gateway,proto3,oneof" json:"gateway,omitempty"`
-	Amount         *string                `protobuf:"bytes,8,opt,name=amount,proto3,oneof" json:"amount,omitempty"`
+	Amount         *float32               `protobuf:"fixed32,8,opt,name=amount,proto3,oneof" json:"amount,omitempty"`
 	StartTimestamp *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=start_timestamp,json=startTimestamp,proto3,oneof" json:"start_timestamp,omitempty"`
 	EndTimestamp   *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=end_timestamp,json=endTimestamp,proto3,oneof" json:"end_timestamp,omitempty"`
 	SortedValue    *string                `protobuf:"bytes,11,opt,name=sorted_value,json=sortedValue,proto3,oneof" json:"sorted_value,omitempty"`
@@ -367,11 +367,11 @@ func (x *PaymentLogsRequest) GetGateway() string {
 	return ""
 }
 
-func (x *PaymentLogsRequest) GetAmount() string {
+func (x *PaymentLogsRequest) GetAmount() float32 {
 	if x != nil && x.Amount != nil {
 		return *x.Amount
 	}
-	return ""
+	return 0
 }
 
 func (x *PaymentLogsRequest) GetStartTimestamp() *timestamppb.Timestamp {
@@ -619,7 +619,7 @@ type PaymentLogs struct {
 	OrderId       string                 `protobuf:"bytes,5,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
 	PaymentId     string                 `protobuf:"bytes,6,opt,name=payment_id,json=paymentId,proto3" json:"payment_id,omitempty"`
 	Gateway       string                 `protobuf:"bytes,7,opt,name=gateway,proto3" json:"gateway,omitempty"`
-	Amount        string                 `protobuf:"bytes,8,opt,name=amount,proto3" json:"amount,omitempty"`
+	Amount        float32                `protobuf:"fixed32,8,opt,name=amount,proto3" json:"amount,omitempty"`
 	Timestamp     string                 `protobuf:"bytes,9,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -704,11 +704,11 @@ func (x *PaymentLogs) GetGateway() string {
 	return ""
 }
 
-func (x *PaymentLogs) GetAmount() string {
+func (x *PaymentLogs) GetAmount() float32 {
 	if x != nil {
 		return x.Amount
 	}
-	return ""
+	return 0
 }
 
 func (x *PaymentLogs) GetTimestamp() string {
@@ -998,7 +998,7 @@ const file_query_proto_rawDesc = "" +
 	"\n" +
 	"payment_id\x18\x06 \x01(\tH\x05R\tpaymentId\x88\x01\x01\x12\x1d\n" +
 	"\agateway\x18\a \x01(\tH\x06R\agateway\x88\x01\x01\x12\x1b\n" +
-	"\x06amount\x18\b \x01(\tH\aR\x06amount\x88\x01\x01\x12H\n" +
+	"\x06amount\x18\b \x01(\x02H\aR\x06amount\x88\x01\x01\x12H\n" +
 	"\x0fstart_timestamp\x18\t \x01(\v2\x1a.google.protobuf.TimestampH\bR\x0estartTimestamp\x88\x01\x01\x12D\n" +
 	"\rend_timestamp\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampH\tR\fendTimestamp\x88\x01\x01\x12&\n" +
@@ -1053,7 +1053,7 @@ const file_query_proto_rawDesc = "" +
 	"\n" +
 	"payment_id\x18\x06 \x01(\tR\tpaymentId\x12\x18\n" +
 	"\agateway\x18\a \x01(\tR\agateway\x12\x16\n" +
-	"\x06amount\x18\b \x01(\tR\x06amount\x12\x1c\n" +
+	"\x06amount\x18\b \x01(\x02R\x06amount\x12\x1c\n" +
 	"\ttimestamp\x18\t \x01(\tR\ttimestamp\"J\n" +
 	"\n" +
 	"Pagination\x12\x19\n" +

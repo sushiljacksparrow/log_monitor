@@ -49,7 +49,7 @@ message PaymentLogsRequest {
   optional string order_id = 5;
   optional string payment_id = 6;
   optional string gateway = 7;
-  optional string amount = 8;
+  optional float amount = 8;
   optional google.protobuf.Timestamp start_timestamp = 9;
   optional google.protobuf.Timestamp end_timestamp = 10;
   optional string sorted_value = 11;
@@ -89,7 +89,7 @@ message PaymentLogs {
   string order_id = 5;
   string payment_id = 6;
   string gateway = 7;
-  string amount = 8;
+  float amount = 8;
   string timestamp = 9;
 }
 

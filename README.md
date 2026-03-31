@@ -17,7 +17,7 @@ The mock services currently covered are:
 
 ## Architecture
 
-Architecture flow: see [Image #1] and [diagram.excalidraw](D:\logflow\logflow\diagram.excalidraw).
+Architecture flow: see [Image #1] and [diagram](D:\logflow\logflow\logflow.png).
 
 The current architecture flow is:
 

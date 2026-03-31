@@ -64,7 +64,7 @@ type PaymentLogFilters struct {
 	OrderID        *string
 	PaymentID      *string
 	Gateway        *string
-	Amount         *float64
+	Amount         *float32
 	StartTimestamp *timestamppb.Timestamp
 	EndTimestamp   *timestamppb.Timestamp
 }
@@ -208,6 +208,7 @@ func searchLogs[T any](ctx context.Context, client *es.TypedClient, indexName st
 		}
 		var entry T
 		if err := json.Unmarshal(hit.Source_, &entry); err != nil {
+			log.Printf("error while unmarshalling %v", err)
 			return nil, nil, fmt.Errorf("unmarshal %s hit: %w", indexName, err)
 		}
 		logs = append(logs, &entry)

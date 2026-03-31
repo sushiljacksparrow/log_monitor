@@ -9,11 +9,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/IBM/sarama"
 	es "github.com/elastic/go-elasticsearch/v9"
 	"github.com/elastic/go-elasticsearch/v9/esutil"
 	"github.com/mahirjain10/logflow/backend/internal/constants"
 	"github.com/mahirjain10/logflow/backend/internal/kafka"
-	"github.com/mahirjain10/logflow/backend/internal/utils"
 )
 
 type DLQMessage struct {
@@ -24,17 +24,18 @@ type DLQMessage struct {
 	Body       string `json:"body"`
 }
 
-func AddIndex(ctx context.Context, esIndexer esutil.BulkIndexer, indexName, body string, retryMap *RetryMap, producer *kafka.Producer) error {
+func AddIndex(ctx context.Context, esIndexer esutil.BulkIndexer, indexName, body string, retryMap *RetryMap, producer *kafka.Producer, msg *sarama.ConsumerMessage) error {
 	initialBackoff := time.Second
-	uuid, err := utils.GenerateUUID()
-	if err != nil {
-		return fmt.Errorf("error while generating UUID for index: %s", indexName)
-	}
-
-	err = esIndexer.Add(ctx, esutil.BulkIndexerItem{
+	// uuid, err := utils.GenerateUUID()
+	// if err != nil {
+	// 	return fmt.Errorf("error while generating UUID for index: %s", indexName)
+	// }
+	docID := fmt.Sprintf("%s-%d-%d", msg.Topic, msg.Partition, msg.Offset)
+	log.Println("msg body before processing", body)
+	err := esIndexer.Add(ctx, esutil.BulkIndexerItem{
 		Index:      indexName,
 		Action:     "index",
-		DocumentID: uuid,
+		DocumentID: docID,
 		Body:       strings.NewReader(body),
 		OnSuccess: func(ctx context.Context, item esutil.BulkIndexerItem, res esutil.BulkIndexerResponseItem) {
 			log.Printf("Indexed: %s for index: %s\n", item.DocumentID, indexName)
@@ -72,7 +73,7 @@ func AddIndex(ctx context.Context, esIndexer esutil.BulkIndexer, indexName, body
 					go func() {
 						select {
 						case <-time.After(backoff + jitter):
-							AddIndex(ctx, esIndexer, indexName, body, retryMap, producer)
+							AddIndex(ctx, esIndexer, indexName, body, retryMap, producer, msg)
 						case <-ctx.Done():
 						}
 					}()

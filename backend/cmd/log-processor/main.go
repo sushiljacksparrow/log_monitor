@@ -57,7 +57,7 @@ func main() {
 		log.Printf("error while init new producer:%v\n", err)
 	}
 	defer producer.Close()
-	consumer, err := kafka.NewConsumer(config.KafkaBrokers, config.KafkaTopicLogGroupID)
+	consumer, err := kafka.NewConsumer(config.KafkaBrokers, config.KafkaTopicLogGroupID, kafka.NewDurableConsumerConfig)
 	if err != nil {
 		log.Printf("error while initalizing a consumer with group ID: %s - %v\n", config.KafkaTopicLogGroupID, err)
 	}

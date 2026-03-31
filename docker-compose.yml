@@ -35,7 +35,6 @@ services:
       - "9200:9200"
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
-
   kibana:
     image: docker.elastic.co/kibana/kibana:8.11.0
     container_name: kibana
@@ -46,6 +45,14 @@ services:
     environment:
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
 
+  grafana:
+          image: grafana/grafana
+          container_name: grafana
+          restart: unless-stopped
+          ports:
+            - '3000:3000'
+          volumes:
+            - grafana_data:/usr/share/grafana/data
   # auth-service:
   #   env_file:
   #     - ./backend/.env
@@ -100,3 +107,4 @@ services:
 
 volumes:
   elasticsearch_data:
+  grafana_data:

@@ -21,6 +21,8 @@ Architecture flow:
 
 ![LogFlow Architecture](assets/logflow.png)
 
+[Project Walkthrough / Demo](https://drive.google.com/file/d/1WLmoh7zGybbAkQ_1HVyPyuRL_kSqpfQ9/view?usp=drive_link)
+
 Editable source: [assets/diagram.excalidraw](assets/diagram.excalidraw)
 
 The current architecture flow is:
@@ -442,13 +444,6 @@ Useful ports:
 - `3000` Grafana
 - `9092` Kafka
 
-## Project Walkthrough Video
-
-<video src="assets/output.mp4" controls width="100%">
-  Your browser does not support the video tag.
-</video>
-
-Direct file link: [assets/output.mp4](assets/output.mp4)
 
 ## Makefile Commands
 
@@ -466,6 +461,8 @@ Useful commands from [backend/Makefile](D:\logflow\logflow\backend\Makefile):
 - `make docker-log`
 - `make docker-query`
 - `make docker-gateway`
+
+
 
 
 

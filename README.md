@@ -444,11 +444,9 @@ Useful ports:
 
 ## Project Walkthrough Video
 
-<video src="assets/output.mp4" controls width="100%">
-  Your browser does not support the video tag.
-</video>
+[![Watch the project walkthrough](assets/logflow.png)](assets/output.mp4)
 
-Direct file link: [assets/output.mp4](assets/output.mp4)
+GitHub README files do not reliably support inline <video> playback. Click the preview image above to open the walkthrough video.
 
 ## Makefile Commands
 
@@ -466,6 +464,7 @@ Useful commands from [backend/Makefile](D:\logflow\logflow\backend\Makefile):
 - `make docker-log`
 - `make docker-query`
 - `make docker-gateway`
+
 
 
 

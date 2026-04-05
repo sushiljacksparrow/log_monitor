@@ -1,3 +1,4 @@
+// auth-service
 package main
 
 import (

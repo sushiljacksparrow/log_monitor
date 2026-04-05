@@ -1,3 +1,4 @@
+// log-processor
 package main
 
 import (

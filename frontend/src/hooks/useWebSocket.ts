@@ -110,6 +110,11 @@ export function useWebSocket() {
         socketRef.current = socket
 
         socket.addEventListener('open', () => {
+          if (socketRef.current !== socket) {
+            socket.close()
+            return
+          }
+
           if (!active) {
             socket.close()
             return
@@ -125,12 +130,24 @@ export function useWebSocket() {
         })
 
         socket.addEventListener('close', () => {
+          if (socketRef.current === socket) {
+            socketRef.current = null
+          }
+
+          if (!active || socketRef.current !== null) {
+            return
+          }
+
           setIsConnected(false)
           scheduleReconnect()
         })
 
         socket.addEventListener('error', () => {
-          socket.close()
+          if (socketRef.current !== socket || !active) {
+            return
+          }
+
+          setIsConnected(false)
         })
       } catch {
         setIsConnected(false)
@@ -143,7 +160,12 @@ export function useWebSocket() {
     return () => {
       active = false
       clearTimer()
-      socketRef.current?.close()
+      const socket = socketRef.current
+      socketRef.current = null
+
+      if (socket?.readyState === WebSocket.OPEN) {
+        socket.close()
+      }
     }
   }, [])
 

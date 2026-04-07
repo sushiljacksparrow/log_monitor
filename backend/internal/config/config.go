@@ -30,7 +30,7 @@ func InitConfig() (Envs, error) {
 	fmt.Printf("Loading .env from: %s\n", envPath)
 
 	if err := dotenv.Load(envPath); err != nil {
-		return Envs{}, fmt.Errorf("error while loading env file %s: %v", envPath, err)
+		fmt.Printf("Warning: could not load env file %s: %v\n", envPath, err)
 	}
 	kafkaBrokers := os.Getenv("KAFKA_BROKERS")
 	kafkaTopicLogGroupID := os.Getenv("KAFKA_LOG_GROUP_ID")

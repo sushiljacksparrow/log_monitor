@@ -2,48 +2,54 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"time"
 
-	"github.com/mahirjain10/logflow/backend/internal/config"
-	"github.com/mahirjain10/logflow/backend/internal/constants"
-	"github.com/mahirjain10/logflow/backend/internal/kafka"
 	"github.com/mahirjain10/logflow/backend/internal/utils"
+	logmonitor "github.com/mahirjain10/logflow/backend/pkg/log_monitor"
 )
 
 func main() {
-	envs, err := config.InitConfig()
+	logger, err := logmonitor.New("order-service",
+		logmonitor.WithLogDir("/var/log/logflow"),
+	)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create logger: %v", err)
 	}
-	producer, err := kafka.NewProducer(envs.KafkaBrokers)
-	if err != nil {
-		log.Println("couldnt intialize kafka producer")
-	}
-	defer producer.Close()
+	defer logger.Close()
+
 	for {
-		for _, logValue := range MockOrderLog {
+		for _, mockLog := range MockOrderLog {
 			time.Sleep(3 * time.Second)
-			logValue["timestamp"] = time.Now().UTC().Format(time.RFC3339)
-			reqID, err := utils.GenerateUUID()
-			if err != nil {
-				log.Println(err)
+
+			orderId, _ := utils.GenerateUUID()
+			ip := utils.RandomIP()
+
+			level := mockLog["level"].(string)
+			msg := mockLog["message"].(string)
+
+			fields := map[string]interface{}{
+				"user_id":    mockLog["user_id"],
+				"order_id":   orderId,
+				"product_id": mockLog["product_id"],
+				"stock_left": mockLog["stock_left"],
+				"carrier":    mockLog["carrier"],
+				"ip":         ip.String(),
 			}
-			orderId, err := utils.GenerateUUID()
-			if err != nil {
-				log.Println(err)
+
+			switch level {
+			case "INFO":
+				logger.Info(msg, fields)
+			case "WARN":
+				logger.Warn(msg, fields)
+			case "ERROR":
+				logger.Error(msg, fields)
+			case "DEBUG":
+				logger.Debug(msg, fields)
 			}
-			logValue["request_id"] = reqID
-			logValue["order_id"] = orderId
-			logValue["ip"] = utils.RandomIP()
-			logByte, err := json.Marshal(logValue)
-			if err != nil {
-				log.Printf("error while marshalling log %v\n", err)
-			}
-			producer.Publish(constants.ORDER_SERVICE_LOGS_TOPIC, logByte)
-			fmt.Println(logValue)
+
+			fmt.Printf("logged: level=%s message=%s\n", level, msg)
 		}
 	}
 }

@@ -2,52 +2,52 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"time"
 
-	"github.com/mahirjain10/logflow/backend/internal/config"
-	"github.com/mahirjain10/logflow/backend/internal/constants"
-	"github.com/mahirjain10/logflow/backend/internal/kafka"
 	"github.com/mahirjain10/logflow/backend/internal/utils"
+	logmonitor "github.com/mahirjain10/logflow/backend/pkg/log_monitor"
 )
 
 func main() {
-	envs, err := config.InitConfig()
+	logger, err := logmonitor.New("payment-service",
+		logmonitor.WithLogDir("/var/log/logflow"),
+	)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create logger: %v", err)
 	}
-	producer, err := kafka.NewProducer(envs.KafkaBrokers)
-	if err != nil {
-		log.Printf("couldnt intialize kafka producer: %v\n", err)
-	}
-	defer producer.Close()
+	defer logger.Close()
+
 	for {
-		for _, logValue := range MockPaymentLog {
+		for _, mockLog := range MockPaymentLog {
 			time.Sleep(3 * time.Second)
-			logValue["timestamp"] = time.Now().UTC().Format(time.RFC3339)
-			reqID, err := utils.GenerateUUID()
-			if err != nil {
-				log.Println(err)
+
+			paymentId, _ := utils.GenerateUUID()
+			orderId, _ := utils.GenerateUUID()
+
+			level := mockLog["level"].(string)
+			msg := mockLog["message"].(string)
+
+			fields := map[string]interface{}{
+				"payment_id": paymentId,
+				"order_id":   orderId,
+				"gateway":    mockLog["gateway"],
+				"amount":     mockLog["amount"],
 			}
-			paymentId, err := utils.GenerateUUID()
-			if err != nil {
-				log.Println(err)
+
+			switch level {
+			case "INFO":
+				logger.Info(msg, fields)
+			case "WARN":
+				logger.Warn(msg, fields)
+			case "ERROR":
+				logger.Error(msg, fields)
+			case "DEBUG":
+				logger.Debug(msg, fields)
 			}
-			orderId, err := utils.GenerateUUID()
-			if err != nil {
-				log.Println(err)
-			}
-			logValue["request_id"] = reqID
-			logValue["payment_id"] = paymentId
-			logValue["order_id"] = orderId
-			logByte, err := json.Marshal(logValue)
-			if err != nil {
-				log.Printf("error while marshalling log %v\n", err)
-			}
-			producer.Publish(constants.PAYMENT_SERVICE_LOGS_TOPIC, logByte)
-			fmt.Println(logValue)
+
+			fmt.Printf("logged: level=%s message=%s\n", level, msg)
 		}
 	}
 }

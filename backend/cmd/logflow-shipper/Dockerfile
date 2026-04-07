@@ -13,13 +13,11 @@ COPY cmd/ ./cmd/
 COPY internal/ ./internal/
 COPY pkg/ ./pkg/
 
-RUN go build -v -o order-service ./cmd/order-service/
-
+RUN go build -v -o logflow-shipper ./cmd/logflow-shipper/
 
 # FINAL STAGE
 FROM alpine:latest AS final
 WORKDIR /app
 
-COPY --from=builder /app/order-service .
-EXPOSE 8080
-CMD ["./order-service"]
+COPY --from=builder /app/logflow-shipper .
+CMD ["./logflow-shipper"]
